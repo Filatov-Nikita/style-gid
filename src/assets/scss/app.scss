@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @import './fonts/montserrat.scss';
+  @import './fonts/noto.scss';
+
+  body {
+    @apply tw-font-body tw-text-18;
+  }
+}
