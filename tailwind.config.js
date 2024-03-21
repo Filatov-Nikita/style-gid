@@ -8,6 +8,8 @@ export default {
   theme: {
     colors: {
       'black': '#2A2A2A',
+      'white': '#ffffff',
+      'black2': '#151515',
     },
     fontFamily: {
       'noto': [ 'noto', 'Arial', 'sans-serif' ],
