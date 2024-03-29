@@ -23,19 +23,19 @@
   const navLinks = [
     {
       label: 'Об услуге',
-      href: '#',
+      href: '#about',
     },
     {
       label: 'Наши стилисты',
-      href: '#',
+      href: '#designers',
     },
     {
       label: 'Запись',
-      href: '#',
+      href: '#order',
     },
     {
       label: 'Вопросы-ответы',
-      href: '#',
+      href: '#faq',
     }
   ];
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <section class="order-block">
+  <section class="order-block" id="order">
     <div class="wrapper">
       <h2 class="h1 order-block__title">
         Запись на услугу

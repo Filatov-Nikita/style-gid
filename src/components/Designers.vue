@@ -1,5 +1,5 @@
 <template>
-  <section class="designer-block">
+  <section class="designer-block" id="designers">
     <div class="wrapper">
       <div class="designer-block__wrap">
         <h2 class="h1 designer-block__title">
