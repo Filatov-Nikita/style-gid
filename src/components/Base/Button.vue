@@ -31,7 +31,7 @@
   .base-btn {
     padding: 15px 40px;
     line-height: 1.35;
-    @apply tw-text-24 tw-font-medium tw-text-center;
+    @apply tw-text-24 tw-font-medium tw-text-center tw-font-noto tw-uppercase;
 
     &--uppercase {
       text-transform: uppercase;

@@ -7,7 +7,8 @@
   @import './fonts/noto.scss';
 
   body {
-    @apply tw-font-body tw-text-18 tw-text-black2;
+    line-height: 1.4;
+    @apply tw-font-body tw-text-18 tw-text-black2 tw-bg-white;
   }
 }
 
@@ -18,5 +19,10 @@
     padding-right: 30px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  h1, .h1 {
+    line-height: 1.15;
+    @apply tw-font-noto tw-text-80 tw-uppercase;
   }
 }

@@ -3,7 +3,7 @@
     <div class="wrapper">
       <div class="promo-banner__wrap">
         <div class="promo-banner__left">
-          <h1 class="promo-banner__title">Ваш гид по стилю</h1>
+          <h1 class="h1 promo-banner__title">Ваш гид по стилю</h1>
           <p class="promo-banner__subtitle">Меняйся вместе с Планетой</p>
           <BaseButton theme="white">Записаться</BaseButton>
         </div>
@@ -52,7 +52,6 @@
       margin: 0 auto;
       margin-bottom: 22px;
       line-height: 1.15;
-      @apply tw-text-80 tw-font-noto tw-uppercase;
     }
 
     &__subtitle {
