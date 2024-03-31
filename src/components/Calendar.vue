@@ -38,9 +38,14 @@
     --vc-day-content-disabled-color: #C1C1C1;
     width: 100%;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.14);
+    border-radius: 20px;
 
     .vc-weeks {
       padding: 40px 35px 20px;
+
+      @include sm {
+        padding: 20px 12px 15px;
+      }
     }
 
     .vc-header {
@@ -48,6 +53,13 @@
       padding-left: 35px;
       padding-right: 35px;
       font-size: 24px;
+
+      @include sm {
+        font-size: 16px;
+        margin-top: 20px;
+        padding-left: 12px;
+        padding-right: 12px;
+      }
     }
 
     .vc-red {
@@ -58,16 +70,30 @@
       font-size: 24px;
       font-weight: 500;
       line-height: normal;
+
+      @include sm {
+        font-size: 16px;
+      }
     }
 
     .vc-day-content {
       width: 59px;
       height: 59px;
+
+      @include sm {
+        width: 32px;
+        height: 32px;
+      }
     }
 
     .vc-highlight {
       width: 56px;
       height: 56px;
+
+      @include sm {
+        width: 30px;
+        height: 30px;
+      }
     }
   }
 </style>

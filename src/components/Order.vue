@@ -58,6 +58,11 @@
     padding-top: 80px;
     padding-bottom: 150px;
 
+    @include sm {
+      padding-top: 35px;
+      padding-bottom: 70px;
+    }
+
     &__title {
       margin-bottom: 48px;
     }
@@ -66,6 +71,10 @@
       display: flex;
       flex-wrap: wrap;
       gap: 84px;
+
+      @include sm {
+        gap: 30px;
+      }
     }
 
     &__left {
@@ -78,10 +87,18 @@
 
     &__curdt {
       margin-bottom: 30px;
+
+      @include sm {
+        margin-bottom: 20px;
+      }
     }
 
     &__select {
       margin-bottom: 50px;
+
+      @include sm {
+        margin-bottom: 30px;
+      }
     }
   }
 
@@ -90,11 +107,20 @@
       line-height: 1.35;
       margin-bottom: 10px;
       @apply tw-text-20;
+
+      @include sm {
+        margin-bottom: 6px;
+        @apply tw-text-16;
+      }
     }
 
     &__value {
       line-height: 1.35;
       @apply tw-text-24 tw-font-semibold;
+
+      @include sm {
+        @apply tw-text-20;
+      }
     }
   }
 </style>

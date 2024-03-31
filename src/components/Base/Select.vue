@@ -87,12 +87,20 @@
       user-select: none;
       display: flex;
       align-items: center;
+
+      @include sm {
+        padding: 12px 20px;
+      }
     }
 
     &__val {
       flex-grow: 1;
       line-height: 1.35;
       @apply tw-text-24;
+
+      @include sm {
+        @apply tw-text-20;
+      }
     }
 
     &__icon-wrap {
@@ -123,6 +131,10 @@
     left: 0px;
     z-index: 100;
     @apply tw-bg-white;
+
+    @include sm {
+      padding: 8px;
+    }
   }
 
   .app-option {
@@ -131,6 +143,11 @@
     padding: 8px;
     line-height: 1.35;
     @apply tw-text-24;
+
+    @include sm {
+      padding: 6px;
+      @apply tw-text-20;
+    }
 
     &--active {
       @apply tw-font-bold;

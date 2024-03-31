@@ -5,7 +5,7 @@
       <PromoBanner />
       <About />
       <!-- <Designers /> -->
-      <!-- <Order /> -->
+      <Order />
       <Faq />
       <Footer />
     </main>
