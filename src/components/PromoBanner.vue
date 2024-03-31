@@ -29,16 +29,44 @@
       text-align: center;
       flex-basis: 550px;
       @apply tw-text-white;
+
+      @include lg {
+        flex-basis: 500px;
+      }
+
+      @include sm {
+        flex-basis: 100%;
+        padding-top: 48px;
+        padding-bottom: 48px;
+      }
     }
 
     &__right {
       flex-basis: 681px;
       margin-right: -30px;
+
+      @include lg {
+        flex-basis: 470px;
+      }
+
+      @include sm {
+        flex-basis: 100%;
+        margin-right: -20px;
+        margin-left: -20px;
+      }
     }
 
     &__wrap {
       display: flex;
       justify-content: space-between;
+
+      @include lg {
+        gap: 30px;
+      }
+
+      @include sm {
+        display: block;
+      }
     }
 
     &__img {
@@ -52,12 +80,22 @@
       margin: 0 auto;
       margin-bottom: 22px;
       line-height: 1.15;
+
+      @include sm {
+        max-width: 320px;
+        margin-bottom: 16px;
+      }
     }
 
     &__subtitle {
       line-height: 1.35;
       margin-bottom: 50px;
       @apply tw-font-light tw-text-24;
+
+      @include sm {
+        margin-bottom: 30px;
+        @apply tw-text-18;
+      }
     }
   }
 </style>

@@ -39,7 +39,7 @@
     line-height: 1.15;
     @apply tw-font-noto tw-text-80 tw-uppercase;
 
-    @include sm {
+    @include md {
       font-size: 58px;
     }
   }
