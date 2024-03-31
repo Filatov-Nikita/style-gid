@@ -39,9 +39,20 @@
 
 <style scoped lang="scss">
   .footer {
+    &__texts {
+      @include sm {
+        width: 100%;
+      }
+    }
+
     &__wrap {
       padding-top: 120px;
       padding-bottom: 90px;
+
+      @include sm {
+        padding-top: 70px;
+        padding-bottom: 50px;
+      }
     }
 
     &__text {
@@ -59,6 +70,10 @@
       justify-content: space-between;
       gap: 30px;
       margin-bottom: 26px;
+
+      @include sm {
+        gap: 20px;
+      }
     }
 
     &__social {
@@ -69,6 +84,11 @@
 
     &__logo {
       width: 222px;
+
+      @include sm {
+        order: -1;
+        width: 210px;
+      }
 
       img {
         width: 100%;
