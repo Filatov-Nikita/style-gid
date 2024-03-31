@@ -123,8 +123,13 @@
     &__link {}
 
     &__burger {
+      display: none;
       width: 32px;
       height: 32px;
+
+      @include md {
+        display: block;
+      }
     }
   }
 

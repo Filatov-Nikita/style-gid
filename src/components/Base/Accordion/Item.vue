@@ -45,6 +45,11 @@
       gap: 20px;
       cursor: pointer;
       user-select: none;
+
+      @include sm {
+        padding-top: 17px;
+        padding-bottom: 17px;
+      }
     }
 
     &__label {
@@ -53,6 +58,10 @@
 
     &__body {
       padding-bottom: 25px;
+
+      @include sm {
+        padding-bottom: 18px;
+      }
     }
   }
 </style>

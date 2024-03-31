@@ -4,8 +4,8 @@
     <main>
       <PromoBanner />
       <About />
-      <Designers />
-      <Order />
+      <!-- <Designers /> -->
+      <!-- <Order /> -->
       <Faq />
       <Footer />
     </main>

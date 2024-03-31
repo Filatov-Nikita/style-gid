@@ -1,22 +1,24 @@
 <template>
   <section class="faq-block" id="faq">
-    <div class="faq-block__wrap">
-      <h2 class="h1 faq-block__title">Вопросы-ответы</h2>
-      <div>
-        <AccordItem class="tw-text-white">
-          <template #label>
-            <span class="tw-text-22 tw-font-semibold">
-              В случае, если я не совершу покупки, я должен оплатить услугу?
-              В случае, если я не совершу покупки, я должен оплатить услугу?
-              В случае, если я не совершу покупки, я должен оплатить услугу?
+    <div class="wrapper">
+      <div class="faq-block__wrap">
+        <h2 class="h1 faq-block__title">Вопросы-ответы</h2>
+        <div>
+          <AccordItem class="faq-accord">
+            <template #label>
+              <span class="faq-accord__label">
+                В случае, если я не совершу покупки, я должен оплатить услугу?
+                В случае, если я не совершу покупки, я должен оплатить услугу?
+                В случае, если я не совершу покупки, я должен оплатить услугу?
+              </span>
+            </template>
+            <span class="faq-accord__body">
+              Нет, но мы убедительно просим обращаться к стилистам только с реальным запросом.
+              Нет, но мы убедительно просим обращаться к стилистам только с реальным запросом.
+              Нет, но мы убедительно просим обращаться к стилистам только с реальным запросом.
             </span>
-          </template>
-          <span class="tw-text-18">
-            Нет, но мы убедительно просим обращаться к стилистам только с реальным запросом.
-            Нет, но мы убедительно просим обращаться к стилистам только с реальным запросом.
-            Нет, но мы убедительно просим обращаться к стилистам только с реальным запросом.
-          </span>
-        </AccordItem>
+          </AccordItem>
+        </div>
       </div>
     </div>
   </section>
@@ -36,11 +38,41 @@
       margin-right: auto;
       padding-top: 70px;
       padding-bottom: 103px;
+
+      @include sm {
+        padding-top: 50px;
+        padding-bottom: 70px;
+      }
     }
 
     &__title {
       margin-bottom: 26px;
       @apply tw-text-center tw-text-white;
+
+      @include sm {
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .faq-accord {
+    line-height: 1.35;
+    @apply tw-text-white;
+
+    &__label {
+      @apply tw-text-22 tw-font-semibold;
+
+      @include sm {
+        @apply tw-text-18;
+      }
+    }
+
+    &__body {
+      @apply tw-text-18;
+
+      @include sm {
+        @apply tw-text-16;
+      }
     }
   }
 </style>
