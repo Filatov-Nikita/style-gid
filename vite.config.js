@@ -22,7 +22,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        // additionalData: '@use "@/assets/css/mixins/screens.scss" as *;'
+        additionalData: '@use "@/assets/scss/mixins/screens.scss" as *;'
       }
     }
   },

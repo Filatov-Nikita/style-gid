@@ -19,10 +19,28 @@
     padding-right: 30px;
     margin-left: auto;
     margin-right: auto;
+
+    @include screen($lg) {
+      max-width: 1000px;
+    }
+
+    @include screen($md) {
+      max-width: 730px;
+    }
+
+    @include screen($sm) {
+      max-width: 540px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
   }
 
   h1, .h1 {
     line-height: 1.15;
     @apply tw-font-noto tw-text-80 tw-uppercase;
+
+    @include sm {
+      font-size: 58px;
+    }
   }
 }

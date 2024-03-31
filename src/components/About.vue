@@ -29,28 +29,58 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
+
+      @include lg {
+        gap: 20px;
+      }
+
+      @include sm {
+        padding-top: 70px;
+        padding-bottom: 35px;
+      }
     }
 
     &__left {
       flex-basis: 450px;
+
+      @include lg {
+        flex-basis: 100%;
+      }
     }
 
     &__right {
       flex-basis: 639px;
+
+      @include lg {
+        flex-basis: 100%;
+      }
     }
 
     &__text1 {
       margin-bottom: 40px;
+
+      @include sm {
+        margin-bottom: 30px;
+      }
     }
 
     &__text1, &__text3 {
       line-height: 1.35;
       @apply tw-text-24;
+
+      @include sm {
+        @apply tw-text-20;
+      }
     }
 
     &__text2 {
       line-height: 1.35;
+      margin-bottom: 10px;
       @apply tw-text-30 tw-font-noto tw-font-semibold;
+
+      @include sm {
+        font-size: 26px;;
+      }
     }
   }
 </style>
