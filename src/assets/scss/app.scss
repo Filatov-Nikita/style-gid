@@ -10,6 +10,12 @@
     line-height: 1.4;
     @apply tw-font-body tw-text-18 tw-text-black2 tw-bg-white;
   }
+
+  input {
+    &:focus {
+      outline: none;
+    }
+  }
 }
 
 @layer components {
@@ -42,5 +48,9 @@
     @include md {
       font-size: 46px;
     }
+  }
+
+  .link {
+    text-decoration: underline;
   }
 }

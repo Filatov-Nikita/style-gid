@@ -120,7 +120,11 @@
       }
     }
 
-    &__link {}
+    &__link {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
 
     &__burger {
       display: none;

@@ -4,19 +4,11 @@
       <div class="faq-block__wrap">
         <h2 class="h1 faq-block__title">Вопросы-ответы</h2>
         <div>
-          <AccordItem class="faq-accord">
+          <AccordItem class="faq-accord" v-for="item in list">
             <template #label>
-              <span class="faq-accord__label">
-                В случае, если я не совершу покупки, я должен оплатить услугу?
-                В случае, если я не совершу покупки, я должен оплатить услугу?
-                В случае, если я не совершу покупки, я должен оплатить услугу?
-              </span>
+              <span class="faq-accord__label">{{ item.label }}</span>
             </template>
-            <span class="faq-accord__body">
-              Нет, но мы убедительно просим обращаться к стилистам только с реальным запросом.
-              Нет, но мы убедительно просим обращаться к стилистам только с реальным запросом.
-              Нет, но мы убедительно просим обращаться к стилистам только с реальным запросом.
-            </span>
+            <span class="faq-accord__body" v-html="item.body"></span>
           </AccordItem>
         </div>
       </div>
@@ -26,6 +18,7 @@
 
 <script setup>
   import AccordItem from './Base/Accordion/Item.vue';
+  import { list } from '@/data/faq';
 </script>
 
 <style scoped lang="scss">

@@ -10,6 +10,7 @@ export default {
       'black': '#2A2A2A',
       'white': '#ffffff',
       'black2': '#151515',
+      'red': '#FB3F4A',
     },
     fontFamily: {
       'noto': [ 'noto', 'Arial', 'sans-serif' ],

@@ -5,7 +5,7 @@
         <h2 class="h1 designer-block__title">
           Наши стилисты
         </h2>
-        <PersonSlider :persons="designers" />
+        <PersonSlider :persons="list" />
       </div>
     </div>
   </section>
@@ -13,6 +13,7 @@
 
 <script setup>
   import PersonSlider from './PersonSlider.vue';
+  import { list } from '@/data/designers';
 
   const designers = [
     {
@@ -43,10 +44,19 @@
     &__wrap {
       padding-top: 70px;
       padding-bottom: 70px;
+
+      @include sm {
+        padding-top: 35px;
+        padding-bottom: 35px;
+      }
     }
 
     &__title {
       margin-bottom: 40px;
+
+      @include sm {
+        margin-bottom: 20px;
+      }
     }
   }
 </style>

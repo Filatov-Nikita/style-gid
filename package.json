@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "maska": "^2.1.11",
     "swiper": "^11.0.7",
     "v-calendar": "^3.1.2",
     "vue": "^3.4.21"

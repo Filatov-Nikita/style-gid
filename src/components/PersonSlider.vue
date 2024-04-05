@@ -1,29 +1,31 @@
 <template>
-  <Swiper v-bind="options" @swiper="onSwiper">
+  <Swiper class="person-slider" v-bind="options" @swiper="onSwiper">
     <SwiperSlide
       class="person-slide"
       v-for="person in persons"
     >
-      <div class="person-slide__photo-wrap">
-        <img class="person-slide__photo" width="600" height="780" :src="person.photo" />
-      </div>
-      <div class="person-slide__body">
-        <p class="person-slide__name">{{ person.name }}</p>
-        <p class="person-slide__label">{{ person.label }}</p>
-        <p class="person-slide__text" v-html="person.text"></p>
-        <div class="person-slide__actions">
-          <div class="counter-block person-slide__cnt">
-            <div class="counter-block__wrap">
-              <span>{{ counter.current }}</span><span>/</span><span class="counter-block__total">{{ counter.total }}</span>
+      <div class="person-slide__wrap">
+        <div class="person-slide__photo-wrap">
+          <img class="person-slide__photo" :width="person.photo.width" :height="person.photo.height" :src="person.photo.url" loading="lazy" />
+        </div>
+        <div class="person-slide__body">
+          <p class="person-slide__name">{{ person.name }}</p>
+          <p class="person-slide__label">{{ person.description }}</p>
+          <p class="person-slide__text" v-html="person.body"></p>
+          <div class="person-slide__actions">
+            <div class="counter-block person-slide__cnt">
+              <div class="counter-block__wrap">
+                <span>{{ counter.current }}</span><span>/</span><span class="counter-block__total">{{ counter.total }}</span>
+              </div>
             </div>
-          </div>
-          <div class="slider-buttons">
-            <button class="slider-btn" :disabled="!canPrev" @click="prev">
-              <BaseIcon :color="canPrev ? '#000000' : '#BEBEBE'" class="slider-btn__icon" name="slider-left" />
-            </button>
-            <button class="slider-btn" :disabled="!canNext" @click="next">
-              <BaseIcon :color="canNext ? '#000000' : '#BEBEBE'" class="slider-btn__icon" name="slider-right" />
-            </button>
+            <div class="slider-buttons">
+              <button class="slider-btn" :disabled="!canPrev" @click="prev">
+                <BaseIcon :color="canPrev ? '#000000' : '#BEBEBE'" class="slider-btn__icon" name="slider-left" />
+              </button>
+              <button class="slider-btn" :disabled="!canNext" @click="next">
+                <BaseIcon :color="canNext ? '#000000' : '#BEBEBE'" class="slider-btn__icon" name="slider-right" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -51,6 +53,7 @@
     'slidesPerView': 1,
     'modules': [ EffectFade ],
     'effect': 'fade',
+    'autoHeight': true,
   });
 
   const swiper = ref(null);
@@ -102,14 +105,34 @@
 </script>
 
 <style scoped lang="scss">
+  .person-slider {
+    height: 780px;
+
+    @include md {
+      height: auto;
+    }
+  }
+
   .person-slide {
-    display: flex;
-    gap: 40px;
-    @apply tw-bg-white;
+    &__wrap {
+      display: flex;
+      gap: 40px;
+      @apply tw-bg-white;
+
+      @include md {
+        flex-wrap: wrap;
+        gap: 30px;
+      }
+    }
 
     &__photo-wrap {
       flex-basis: 600px;
       height: 780px;
+
+      @include sm {
+        height: auto;
+        flex-basis: 100%;
+      }
     }
 
     &__photo {
@@ -123,6 +146,11 @@
       flex-grow: 1;
       flex-basis: 600px;
       padding-top: 87px;
+
+      @include md {
+        padding-top: 0px;
+        flex-basis: 100%;
+      }
     }
 
     &__name {
@@ -130,16 +158,30 @@
       line-height: 1.35;
       margin-bottom: 12px;
       @apply tw-font-bold;
+
+      @include sm {
+        font-size: 26px;
+        margin-bottom: 10px;
+      }
     }
 
     &__label {
       line-height: 1.35;
       margin-bottom: 40px;
       @apply tw-text-24;
+
+      @include sm {
+        margin-bottom: 20px;
+        @apply tw-text-20;
+      }
     }
 
     &__text {
       @apply tw-text-20;
+
+      @include sm {
+        @apply tw-text-16;
+      }
     }
 
     &__actions {
@@ -147,6 +189,17 @@
       bottom: 120px;
       left: 0px;
       z-index: 10;
+
+      @include md {
+        position: static;
+        bottom: auto;
+        left: auto;
+        margin-top: 20px;
+      }
+
+      @include sm {
+        display: none;
+      }
     }
 
     &__cnt {
@@ -158,8 +211,17 @@
     line-height: 1.15;
     @apply tw-text-30 tw-font-light;
 
+    @include sm {
+      display: none;
+      @apply tw-text-20;
+    }
+
     &__wrap {
       margin-bottom: 20px;
+
+      @include sm {
+        margin-bottom: 8px;
+      }
     }
 
     &__total {

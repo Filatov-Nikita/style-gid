@@ -1,11 +1,11 @@
 <template>
   <div class="promo-banner">
-    <div class="wrapper">
+    <div class="">
       <div class="promo-banner__wrap">
         <div class="promo-banner__left">
-          <h1 class="h1 promo-banner__title">Ваш гид по стилю</h1>
-          <p class="promo-banner__subtitle">Меняйся вместе с Планетой</p>
-          <BaseButton theme="white">Записаться</BaseButton>
+          <h1 class="h1 promo-banner__title">Ваш гид по&nbsp;стилю</h1>
+          <p class="promo-banner__subtitle">Меняйся вместе с&nbsp;Планетой</p>
+          <BaseButton theme="white" @click="scrollToBlock">Записаться</BaseButton>
         </div>
         <div class="promo-banner__right">
           <img class="promo-banner__img" src="@/assets/images/head-banner.jpg" width="1022" height="878" alt="Стильная девушка" />
@@ -16,7 +16,11 @@
 </template>
 
 <script setup>
-
+  function scrollToBlock() {
+    const el = document.querySelector('#order');
+    if(!el) return;
+    el.scrollIntoView({ behavior: 'smooth' });
+  }
 </script>
 
 <style scoped lang="scss">
@@ -24,10 +28,14 @@
     @apply tw-bg-black;
 
     &__left {
-      padding-top: 84px;
-      padding-bottom: 156px;
+      padding: 70px 30px;
       text-align: center;
-      flex-basis: 550px;
+      flex-basis: 750px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       @apply tw-text-white;
 
       @include lg {
@@ -43,7 +51,8 @@
 
     &__right {
       flex-basis: 681px;
-      margin-right: -30px;
+      flex-grow: 1;
+      max-width: 850px;
 
       @include lg {
         flex-basis: 470px;
@@ -51,18 +60,12 @@
 
       @include sm {
         flex-basis: 100%;
-        margin-right: -20px;
-        margin-left: -20px;
       }
     }
 
     &__wrap {
       display: flex;
       justify-content: space-between;
-
-      @include lg {
-        gap: 30px;
-      }
 
       @include sm {
         display: block;
@@ -73,6 +76,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      max-height: 700px;
     }
 
     &__title {

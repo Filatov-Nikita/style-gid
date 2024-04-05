@@ -2,7 +2,7 @@
   <section class="order-block" id="order">
     <div class="wrapper">
       <h2 class="h1 order-block__title">
-        Запись на услугу
+        Запись на&nbsp;услугу
       </h2>
       <div class="order-block__grid">
         <div class="order-block__left">
@@ -20,22 +20,26 @@
             emptyLabel="Выберите стилиста"
             :options="designers"
           />
-          <BaseButton theme="black" v-if="orderDate !== '' && designer !== null">
+          <BaseButton theme="black" :disabled="orderDate === '' || designer === null" @click="showedForm = !showedForm">
             Записаться
           </BaseButton>
         </div>
       </div>
     </div>
+    <CreateOrder v-model:showed="showedForm" />
   </section>
 </template>
 
 <script setup>
   import { computed, ref } from 'vue';
   import Calendar from './Calendar.vue';
+  import CreateOrder from './CreateOrder/index.vue';
 
   const orderDate = ref('');
 
   const designer = ref(null);
+
+  const showedForm = ref(false);
 
   const orderDateLabel = computed(() => {
     if(!orderDate.value) return 'Выберите дату';
@@ -65,6 +69,10 @@
 
     &__title {
       margin-bottom: 48px;
+
+      @include sm {
+        margin-bottom: 20px;
+      }
     }
 
     &__grid {
