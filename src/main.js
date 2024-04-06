@@ -7,9 +7,12 @@ import BaseSelect from './components/Base/Select.vue';
 import BaseModal from './components/Base/Modal/index.vue';
 import BaseModalCard from './components/Base/Modal/Card.vue';
 import BaseInput from './components/Base/Input.vue';
+import Notifications from '@kyvg/vue3-notification';
 import 'virtual:svg-icons-register';
 
 const app = createApp(App);
+
+app.use(Notifications);
 
 app.component('BaseButton', BaseButton);
 app.component('BaseIcon', BaseIcon);

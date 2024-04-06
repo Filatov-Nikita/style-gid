@@ -66,6 +66,8 @@
     &__wrap {
       display: flex;
       justify-content: space-between;
+      max-width: 1920px;
+      margin: 0 auto;
 
       @include sm {
         display: block;

@@ -1,5 +1,5 @@
 <template>
-  <form class="auth-form" action="POST">
+  <form class="auth-form" @submit.prevent="onSubmit">
     <BaseInput class="auth-form__input" v-model="form.phone" v-model:maskObject="phoneMask" label="Телефон" placeholder="Телефон" maska="+7 (9##) ### ## ##" />
     <BaseInput class="auth-form__input" v-model="form.lastname" label="Фамилия" placeholder="Фамилия" />
     <BaseInput class="auth-form__input" v-model="form.firstname" label="Имя" placeholder="Имя" />
@@ -7,7 +7,7 @@
     <AgreeCheck class="auth-form__check" v-model="form.personal_data_agree">
       Согласен с <a class="link" :href="policyUrl" target="_blank">правилами обработки</a> персональных данных
     </AgreeCheck>
-    <BaseButton class="auth-form__submit" :disabled="!isValid" type="submit" theme="black">
+    <BaseButton class="auth-form__submit" :disabled="!isValid || pending" type="submit" theme="black">
       Получить код
     </BaseButton>
   </form>
@@ -16,6 +16,15 @@
 <script setup>
   import { computed, onMounted, reactive, ref } from 'vue';
   import AgreeCheck from '@/components/AgreeCheck.vue';
+
+  defineProps({
+    pending: {
+      default: false,
+      type: Boolean,
+    }
+  });
+
+  const emit = defineEmits(['submit']);
 
   const policyUrl = 'https://id.mall.tech/4/policy?_ga=2.172854755.1188110737.1711946212-1642067771.1650613927';
 
@@ -27,6 +36,7 @@
     firstname: '',
     personal_data_agree: false,
     email_subscribe_agree: true,
+    g_token: '',
   });
 
   async function prepareCaptcha() {
@@ -43,6 +53,12 @@
       && form.firstname !== ''
       && form.personal_data_agree === true;
   });
+
+  function onSubmit() {
+    const token = grecaptcha.getResponse();
+    form.g_token = token;
+    emit('submit', form);
+  }
 
   onMounted(() => {
     prepareCaptcha();

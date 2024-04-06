@@ -28,6 +28,7 @@
     gap: 12px;
 
     &__input {
+      flex-shrink: 0;
       padding: 2px;
       user-select: none;
       cursor: pointer;

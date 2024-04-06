@@ -6,7 +6,7 @@
       </h2>
       <div class="order-block__grid">
         <div class="order-block__left">
-          <Calendar v-model="orderDate" />
+          <Calendar v-model="orderDate" :disabledDates="disabledDates" />
         </div>
         <div class="order-block__right">
           <div class="current-date order-block__curdt">
@@ -20,13 +20,14 @@
             emptyLabel="Выберите стилиста"
             :options="designers"
           />
-          <BaseButton theme="black" :disabled="orderDate === '' || designer === null" @click="showedForm = !showedForm">
+          <BaseButton theme="black" :disabled="orderDate === '' || designer === null || orderPending" @click="tryOrder">
             Записаться
           </BaseButton>
         </div>
       </div>
     </div>
-    <CreateOrder v-model:showed="showedForm" />
+    <CreateOrder v-model:showed="showedForm" @auth:completed="createOrder" />
+    <SuccessModal v-model:showed="successModal" :orderDate="orderDateLabel" :designerName="currentDesigner?.title ?? '-'" @finish="finish" />
   </section>
 </template>
 
@@ -34,12 +35,24 @@
   import { computed, ref } from 'vue';
   import Calendar from './Calendar.vue';
   import CreateOrder from './CreateOrder/index.vue';
+  import SuccessModal from './CreateOrder/SuccessModal.vue';
+  import * as designersAPI from '@/http/designers';
+  import * as OrderAPI from '@/http/order';
+  import { useNotification } from "@kyvg/vue3-notification";
+  import * as User from '@/helpers/user';
+
+  const { notify }  = useNotification();
+
+  const { data } = await designersAPI.all();
 
   const orderDate = ref('');
 
   const designer = ref(null);
 
   const showedForm = ref(false);
+  const successModal = ref(false);
+
+  const orderPending = ref(false);
 
   const orderDateLabel = computed(() => {
     if(!orderDate.value) return 'Выберите дату';
@@ -49,12 +62,105 @@
     });
   });
 
-  const designers = [
-    {
-      label: 'test1',
-      value: 'test'
+  const designers = computed(() => {
+    if(!data.results) return [];
+    return data.results.map(designer => ({ value: designer.id, label: designer.title }));
+  });
+
+  const currentDesigner = computed(() => {
+    if(!designer.value) return null;
+    return data.results.find(d => d.id === designer.value) ?? null;
+  });
+
+  const availableEvents = computed(() => {
+    if(!currentDesigner.value) return [];
+    return currentDesigner.value.events.filter(event => {
+      return event.users_count < event.capacity;
+    });
+  });
+
+  const bookedEvents = computed(() => {
+    if(!currentDesigner.value) return [];
+    return currentDesigner.value.events.filter(event => {
+      return event.users_count >= event.capacity;
+    });
+  });
+
+  const disabledDates = computed(() => {
+    if(!data.results || !currentDesigner.value) return [ { start: null, end: null,  } ];
+
+    return [
+      {
+        start: new Date(),
+        repeat: {
+          every: 'day',
+          on: (_opts) => {
+            return currentDesigner.value.events
+              .every(event => {
+                const dt1 = event.start_date.split(' ')[0];
+                const dt2 = _opts.date.toISOString().split('T')[0];
+                return dt1 !== dt2;
+              });
+          }
+        },
+      },
+      ...bookedEvents.value.map(event => new Date(event.start_date)),
+    ]
+  });
+
+  function getOrderEvent() {
+    if(availableEvents.value.length === 0) return null;
+    return availableEvents.value.find(event => orderDate.value === event.start_date.split(' ')[0]) ?? null;
+  }
+
+  async function createOrder(userId) {
+    showedForm.value = false;
+    orderPending.value = true;
+
+    try {
+      const res = await OrderAPI.create({
+        event_id: getOrderEvent()?.id,
+        user_id: userId,
+      });
+
+      if(!data.success) {
+        notify({
+          type: 'error',
+          text: data.error,
+        });
+      } else {
+        console.log(res);
+        successModal.value = true;
+      }
+    } catch (e) {
+      if(e.response.status === 401) {
+        User.clean();
+      }
+
+      if(e.response && e.response.data && e.response.data.error) {
+        notify({
+          type: 'error',
+          text: e.response.data.error,
+        });
+      }
+    } finally {
+      orderPending.value = false;
     }
-  ];
+  }
+
+  function finish() {
+    orderDate.value = '';
+    designer.value = null;
+  }
+
+  async function tryOrder() {
+    const userId = User.get()?.id;
+    if(User.has() && userId) {
+      await createOrder(userId);
+    } else {
+      showedForm.value = true;
+    }
+  }
 </script>
 
 <style scoped lang="scss">
@@ -70,6 +176,10 @@
     &__title {
       margin-bottom: 48px;
 
+      @include md {
+        margin-bottom: 30px;
+      }
+
       @include sm {
         margin-bottom: 20px;
       }
@@ -80,6 +190,10 @@
       flex-wrap: wrap;
       gap: 84px;
 
+      @include lg {
+        gap: 45px;
+      }
+
       @include sm {
         gap: 30px;
       }
@@ -87,16 +201,38 @@
 
     &__left {
       flex-basis: 556px;
+
+      @include lg {
+        flex-basis: 450px;
+        flex-grow: 1;
+      }
+
+      @include md {
+        flex-basis: 100%;
+      }
     }
 
     &__right {
       flex-basis: 433px;
+
+      @include lg {
+        flex-basis: 380px;
+        flex-grow: 1;
+      }
+
+      @include md {
+        flex-basis: 100%;
+      }
+
+      @include md {
+        order: -1;
+      }
     }
 
     &__curdt {
       margin-bottom: 30px;
 
-      @include sm {
+      @include md {
         margin-bottom: 20px;
       }
     }
@@ -104,8 +240,12 @@
     &__select {
       margin-bottom: 50px;
 
-      @include sm {
+      @include lg {
         margin-bottom: 30px;
+      }
+
+      @include sm {
+        // margin-bottom: 30px;
       }
     }
   }

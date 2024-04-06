@@ -41,6 +41,10 @@ export default {
   pointer-events: all;
   will-change: scroll-position;
   max-height: calc(100vh - 160px);
+
+  @include sm {
+    max-height: calc(100vh - 120px);
+  }
 }
 </style>
 
@@ -51,7 +55,7 @@ export default {
   height: 100vh;
   left: 0;
   top: 0;
-  z-index: 9900;
+  z-index: 2000;
 
   &__wrap {
     display: flex;
@@ -64,6 +68,10 @@ export default {
     height: 100%;
     left: 0;
     top: 0;
+
+    @include sm {
+      padding: 60px 20px;
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <Swiper class="person-slider" v-bind="options" @swiper="onSwiper">
+  <Swiper class="person-slider" v-bind="options" @swiper="onSwiper" @slide-change="onSliderChange">
     <SwiperSlide
       class="person-slide"
       v-for="person in persons"
@@ -54,6 +54,7 @@
     'modules': [ EffectFade ],
     'effect': 'fade',
     'autoHeight': true,
+    'allowTouchMove': true,
   });
 
   const swiper = ref(null);
@@ -84,6 +85,11 @@
     updateActions();
   }
 
+  function onSliderChange() {
+    updateInd();
+    updateActions();
+  }
+
   function updateInd() {
     if(swiper.value === null) return;
     currentInd.value = swiper.value.activeIndex;
@@ -93,7 +99,7 @@
     if(swiper.value === null) return;
     swiper.value.slideNext();
     updateInd();
-    updateActions(swiper.value);
+    updateActions();
   }
 
   function prev() {
@@ -147,8 +153,11 @@
       flex-basis: 600px;
       padding-top: 87px;
 
-      @include md {
+      @include lg {
         padding-top: 0px;
+      }
+
+      @include md {
         flex-basis: 100%;
       }
     }
@@ -189,6 +198,10 @@
       bottom: 120px;
       left: 0px;
       z-index: 10;
+
+      @include lg {
+        bottom: 0px;
+      }
 
       @include md {
         position: static;

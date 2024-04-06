@@ -1,15 +1,18 @@
 <template>
-  <div class="app">
-    <Header />
-    <main>
-      <PromoBanner />
-      <About />
-      <Designers />
-      <Order />
-      <Faq />
-      <Footer />
-    </main>
-  </div>
+  <Suspense>
+    <div class="app">
+      <notifications />
+      <Header />
+      <main>
+        <PromoBanner />
+        <About />
+        <Designers />
+        <Order />
+        <Faq />
+        <Footer />
+      </main>
+    </div>
+  </Suspense>
 </template>
 
 <script setup>

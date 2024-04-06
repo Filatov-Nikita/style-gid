@@ -6,7 +6,7 @@
     color="red"
     title-position="left"
     :locale="{ id: 'ru', firstDayOfWeek: 2, masks: { weekdays: 'WW', modelValue: 'YYYY-MM-DD' } }"
-    :disabled-dates="disabled"
+    :disabled-dates="disabledDates"
     :min-date="from"
     v-model.string="date"
   />
@@ -17,15 +17,16 @@
   import { DatePicker } from 'v-calendar';
   import 'v-calendar/style.css';
 
+  defineProps({
+    disabledDates: {
+      default: undefined,
+      type: Array,
+    },
+  });
+
   const date = defineModel();
 
   const from = new Date();
-
-  const disabled = ref([{
-    repeat: {
-      weekdays: [2, 3, 4, 5, 6],
-    },
-  }]);
 </script>
 
 <style lang="scss">
