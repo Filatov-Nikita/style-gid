@@ -79,7 +79,7 @@
       });
     } else {
       User.save(data.results);
-      emit('auth:completed', data.results.id);
+      emit('auth:completed', data.results);
     }
 
     checkCodePending.value = false;

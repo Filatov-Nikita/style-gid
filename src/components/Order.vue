@@ -9,16 +9,24 @@
           <Calendar v-model="orderDate" :disabledDates="disabledDates" />
         </div>
         <div class="order-block__right">
-          <div class="current-date order-block__curdt">
-            <div class="current-date__label">Дата</div>
-            <div class="current-date__value">{{ orderDateLabel }}</div>
-          </div>
           <BaseSelect
             class="order-block__select"
             v-model="designer"
             label="Стилист"
             emptyLabel="Выберите стилиста"
             :options="designers"
+          />
+          <div class="current-date order-block__curdt">
+            <div class="current-date__label">Дата</div>
+            <div class="current-date__value">{{ orderDateLabel }}</div>
+          </div>
+          <BaseSelect
+            class="order-block__select"
+            v-model="orderTime"
+            label="Время"
+            emptyLabel="Выберите время"
+            :options="timeSlots"
+            :disabled="!designer || !orderDate"
           />
           <BaseButton theme="black" :disabled="orderDate === '' || designer === null || orderPending" @click="tryOrder">
             Записаться
@@ -27,12 +35,12 @@
       </div>
     </div>
     <CreateOrder v-model:showed="showedForm" @auth:completed="createOrder" />
-    <SuccessModal v-model:showed="successModal" :orderDate="orderDateLabel" :designerName="currentDesigner?.title ?? '-'" @finish="finish" />
+    <SuccessModal v-model:showed="successModal" :event="currentEvent" :designer="currentDesigner" @finish="finish" />
   </section>
 </template>
 
 <script setup>
-  import { computed, ref } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import Calendar from './Calendar.vue';
   import CreateOrder from './CreateOrder/index.vue';
   import SuccessModal from './CreateOrder/SuccessModal.vue';
@@ -40,12 +48,15 @@
   import * as OrderAPI from '@/http/order';
   import { useNotification } from "@kyvg/vue3-notification";
   import * as User from '@/helpers/user';
+  import { dateToIso, dateToLocale } from '@/helpers';
 
   const { notify }  = useNotification();
 
   const { data } = await designersAPI.all();
 
   const orderDate = ref('');
+
+  const orderTime = ref('');
 
   const designer = ref(null);
 
@@ -56,10 +67,7 @@
 
   const orderDateLabel = computed(() => {
     if(!orderDate.value) return 'Выберите дату';
-    return new Date(orderDate.value).toLocaleDateString('ru-RU', {
-      month: 'long',
-      day: '2-digit',
-    });
+    return dateToLocale(new Date(orderDate.value));
   });
 
   const designers = computed(() => {
@@ -74,9 +82,19 @@
 
   const availableEvents = computed(() => {
     if(!currentDesigner.value) return [];
-    return currentDesigner.value.events.filter(event => {
-      return event.users_count < event.capacity;
-    });
+    return currentDesigner.value.events;
+  });
+
+  const currentEvent = computed(() => {
+    if(!orderTime.value) return null;
+    return availableEvents.value.find(event => event.id === orderTime.value) ?? null;
+  });
+
+  const timeSlots = computed(() => {
+    return availableEvents.value.map(event => ({
+      value: event.id,
+      label: event.start_date.substring(11, 16),
+    }));
   });
 
   const bookedEvents = computed(() => {
@@ -87,7 +105,7 @@
   });
 
   const disabledDates = computed(() => {
-    if(!data.results || !currentDesigner.value) return [ { start: null, end: null,  } ];
+    if(!data.results || !currentDesigner.value) return [ { start: null, end: null } ];
 
     return [
       {
@@ -98,29 +116,24 @@
             return currentDesigner.value.events
               .every(event => {
                 const dt1 = event.start_date.split(' ')[0];
-                const dt2 = _opts.date.toISOString().split('T')[0];
+                const dt2 = dateToIso(_opts.date);
                 return dt1 !== dt2;
               });
           }
         },
       },
-      ...bookedEvents.value.map(event => new Date(event.start_date)),
+      // ...bookedEvents.value.map(event => new Date(event.start_date)),
     ]
   });
 
-  function getOrderEvent() {
-    if(availableEvents.value.length === 0) return null;
-    return availableEvents.value.find(event => orderDate.value === event.start_date.split(' ')[0]) ?? null;
-  }
-
-  async function createOrder(userId) {
+  async function createOrder(user) {
     showedForm.value = false;
     orderPending.value = true;
 
     try {
-      const res = await OrderAPI.create({
-        event_id: getOrderEvent()?.id,
-        user_id: userId,
+      const res = await OrderAPI.create(user.api_token, {
+        event_id: currentEvent.value?.id,
+        user_id: user.id,
       });
 
       if(!data.success) {
@@ -154,13 +167,21 @@
   }
 
   async function tryOrder() {
-    const userId = User.get()?.id;
-    if(User.has() && userId) {
-      await createOrder(userId);
+    const user = User.get();
+    if(user) {
+      await createOrder(user);
     } else {
       showedForm.value = true;
     }
   }
+
+  watch(designer, () => {
+    orderDate.value = '';
+  });
+
+  watch(orderDate, () => {
+    orderTime.value = '';
+  });
 </script>
 
 <style scoped lang="scss">

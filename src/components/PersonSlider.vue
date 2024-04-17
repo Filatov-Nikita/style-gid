@@ -7,8 +7,17 @@
       <div class="person-slide__wrap">
         <div class="person-slide__photo-wrap">
           <img class="person-slide__photo" :width="person.photo.width" :height="person.photo.height" :src="person.photo.url" loading="lazy" />
+          <button class="slider-mini-btn slider-mini-btn--left" :disabled="!canPrev" @click="prev">
+            <BaseIcon :color="canPrev ? '#000000' : '#BEBEBE'" class="slider-mini-btn__icon" name="slider-left" />
+          </button>
+          <button class="slider-mini-btn slider-mini-btn--right" :disabled="!canNext" @click="next">
+            <BaseIcon :color="canNext ? '#000000' : '#BEBEBE'" class="slider-mini-btn__icon" name="slider-right" />
+          </button>
         </div>
         <div class="person-slide__body">
+          <div class="counter-block-mini person-slide__cnt">
+            <span>{{ counter.current }}</span><span>/</span><span class="counter-block-mini__total">{{ counter.total }}</span>
+          </div>
           <p class="person-slide__name">{{ person.name }}</p>
           <p class="person-slide__label">{{ person.description }}</p>
           <p class="person-slide__text" v-html="person.body"></p>
@@ -129,6 +138,10 @@
         flex-wrap: wrap;
         gap: 30px;
       }
+
+      @include sm {
+        gap: 6px;
+      }
     }
 
     &__photo-wrap {
@@ -136,6 +149,7 @@
       height: 780px;
 
       @include sm {
+        position: relative;
         height: auto;
         flex-basis: 100%;
       }
@@ -217,6 +231,10 @@
 
     &__cnt {
       margin-bottom: 20px;
+
+      @include sm {
+        margin-bottom: 16px;
+      }
     }
   }
 
@@ -226,7 +244,6 @@
 
     @include sm {
       display: none;
-      @apply tw-text-20;
     }
 
     &__wrap {
@@ -235,6 +252,20 @@
       @include sm {
         margin-bottom: 8px;
       }
+    }
+
+    &__total {
+      color: #A2A2A2;
+    }
+  }
+
+  .counter-block-mini {
+    display: none;
+    line-height: 1.15;
+    @apply tw-text-20 tw-font-light;
+
+    @include sm {
+      display: block;
     }
 
     &__total {
@@ -262,6 +293,42 @@
       display: inline-block;
       width: 20px;
       height: 20px;
+    }
+  }
+
+  .slider-mini-btn {
+    display: none;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    border-radius: 50%;
+    background-color: #EDEDED;
+    text-align: center;
+    font-size: 0px;
+    @apply tw-text-black;
+
+    @include sm {
+      display: block;
+    }
+
+    &--left {
+      position: absolute;
+      left: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &--right {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &__icon {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
     }
   }
 </style>

@@ -15,7 +15,7 @@ export function get() {
 }
 
 export function has() {
-  return get() !== null;
+  return localStorage.get('user') !== null;
 }
 
 export function clean() {

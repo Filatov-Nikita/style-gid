@@ -1,6 +1,6 @@
 <template>
   <div class="tw-relative app-select-cmp">
-    <div class="app-select" @click="showed = !showed">
+    <div class="app-select" :class="{ 'app-select--disabled': disabled }" @click="showed = !showed">
       <div class="app-select__label">{{ label }}</div>
       <div class="app-select__wrap">
         <span class="app-select__val">{{ currentText }}</span>
@@ -39,6 +39,10 @@
     label: {
       required: true,
       type: String,
+    },
+    disabled: {
+      default: false,
+      type: Boolean,
     }
   });
 
@@ -76,6 +80,12 @@
 
 <style scoped lang="scss">
   .app-select {
+
+    &--disabled {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
     &__label {
 
     }

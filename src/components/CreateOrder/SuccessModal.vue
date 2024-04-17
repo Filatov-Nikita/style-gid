@@ -5,11 +5,11 @@
         <BaseIcon class="tw-w-full tw-h-full" name="close" color="#151515" />
       </button>
       <div class="or-success__body">
-        <p>
+        <p class="tw-mb-6 tw-text-20 tw-font-semibold">
           Ваша запись успешно завершена!
         </p>
-        <p class="tw-mb-2">Дата: {{ orderDate }}</p>
-        <p class="tw-mb-2">Стилист: {{ designerName }}</p>
+        <p class="tw-mb-4">{{ date }} в {{ time }}</p>
+        <p>Стилист: {{ designerName }}</p>
         <BaseButton class="or-success__btn" theme="black" @click="finish">
           Завершить
         </BaseButton>
@@ -19,20 +19,35 @@
 </template>
 
 <script setup lang="ts">
-  defineProps({
-    orderDate: {
+  import { computed } from 'vue';
+  import { dateToLocale } from '@/helpers';
+
+  const props = defineProps({
+    event: {
       required: true,
-      type: String,
+      type: [Object, null],
     },
-    designerName: {
+    designer: {
       required: true,
-      type: String,
+      type: [Object, null],
     }
   });
 
   const emit = defineEmits([ 'finish' ]);
 
   const showed = defineModel('showed');
+
+  const designerName = computed(() => props.designer?.title ?? '-')
+
+  const time = computed(() => {
+    if(!props.event) return '-';
+    return props.event.start_date.substring(11, 16) ?? '-';
+  });
+
+  const date = computed(() => {
+    if(!props.event) return '-';
+    return dateToLocale(new Date(props.event.start_date.substring(0, 10)));
+  });
 
   function finish() {
     showed.value = false;
@@ -47,7 +62,7 @@
     padding: 60px 20px 30px;
 
     @include sm {
-      padding: 40px 20px 16px;
+      padding: 50px 20px 16px;
     }
 
     &__close {
@@ -59,10 +74,11 @@
     }
 
     &__body {
-      @apply tw-text-center tw-font-medium tw-text-18;
+      @apply tw-text-center tw-text-16;
     }
 
     &__btn {
+      width: 100%;
       margin-top: 32px;
     }
   }
