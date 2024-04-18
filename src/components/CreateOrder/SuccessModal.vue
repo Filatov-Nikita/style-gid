@@ -9,7 +9,8 @@
           Ваша запись успешно завершена!
         </p>
         <p class="tw-mb-4">{{ date }} в {{ time }}</p>
-        <p>Стилист: {{ designerName }}</p>
+        <p class="tw-mb-4">Стилист: {{ designerName }}</p>
+        <p>Ожидайте подтверждение по телефону.</p>
         <BaseButton class="or-success__btn" theme="black" @click="finish">
           Завершить
         </BaseButton>
