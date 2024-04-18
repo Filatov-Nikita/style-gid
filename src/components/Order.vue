@@ -82,7 +82,9 @@
 
   const availableEvents = computed(() => {
     if(!currentDesigner.value) return [];
-    return currentDesigner.value.events;
+    return currentDesigner.value.events.filter(event => {
+      return event.start_date.substring(0, 10) === orderDate.value;
+    });
   });
 
   const currentEvent = computed(() => {
