@@ -12,6 +12,7 @@
         <Faq />
         <Footer />
       </main>
+      <AuthModal v-model:showed="auth.showedModal.value" @auth:completed="auth.onComplete" />
     </div>
   </Suspense>
 </template>
@@ -25,4 +26,8 @@
   import Order from '@/components/Order.vue';
   import Footer from '@/components/Footer.vue';
   import CommentSlider from '@/components/Comments/Slider/index.vue';
+  import AuthModal from '@/components/Auth/Modal.vue';
+  import { init as initAuth } from '@/composables/useAuth';
+
+  const auth = initAuth();
 </script>

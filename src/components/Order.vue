@@ -34,7 +34,6 @@
         </div>
       </div>
     </div>
-    <CreateOrder v-model:showed="showedForm" @auth:completed="createOrder" />
     <SuccessModal v-model:showed="successModal" :event="currentEvent" :designer="currentDesigner" @finish="finish" />
   </section>
 </template>
@@ -42,15 +41,16 @@
 <script setup>
   import { computed, ref, watch } from 'vue';
   import Calendar from './Calendar.vue';
-  import CreateOrder from './CreateOrder/index.vue';
   import SuccessModal from './CreateOrder/SuccessModal.vue';
+  import useAuth from '@/composables/useAuth';
   import * as designersAPI from '@/http/designers';
   import * as OrderAPI from '@/http/order';
   import { useNotification } from "@kyvg/vue3-notification";
-  import * as User from '@/helpers/user';
   import { dateToIso, dateToLocale } from '@/helpers';
 
   const { notify }  = useNotification();
+
+  const auth = useAuth();
 
   const { data } = await designersAPI.all();
 
@@ -60,7 +60,6 @@
 
   const designer = ref(null);
 
-  const showedForm = ref(false);
   const successModal = ref(false);
 
   const orderPending = ref(false);
@@ -129,7 +128,7 @@
   });
 
   async function createOrder(user) {
-    showedForm.value = false;
+    auth.showedModal.value = false;
     orderPending.value = true;
 
     try {
@@ -149,7 +148,7 @@
       }
     } catch (e) {
       if(e.response.status === 401) {
-        User.clean();
+        auth.logout();
       }
 
       if(e.response && e.response.data && e.response.data.error) {
@@ -169,11 +168,11 @@
   }
 
   async function tryOrder() {
-    const user = User.get();
-    if(user) {
-      await createOrder(user);
+    if(auth.isAuth.value) {
+      await createOrder(auth.user.value);
     } else {
-      showedForm.value = true;
+      auth.showedModal.value = true;
+      auth.successEvent.on(createOrder, { once: true });
     }
   }
 

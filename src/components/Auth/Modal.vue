@@ -1,10 +1,10 @@
 <template>
   <BaseModal v-model="showed">
-    <BaseModalCard class="order-card">
-      <button class="order-card__close" @click="showed = false">
+    <BaseModalCard class="auth-card">
+      <button class="auth-card__close" @click="showed = false">
         <BaseIcon class="tw-w-full tw-h-full" name="close" color="#151515" />
       </button>
-      <div class="order-card__body">
+      <div class="auth-card__body">
         <KeepAlive>
           <AuthForm v-if="step === 'data'" @submit="onAuth" :pending="authPending" />
           <CodeForm v-else-if="step === 'code'" @submit="onCode" :pending="checkCodePending" />
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-  import AuthForm from './AuthForm.vue';
+  import AuthForm from './Form.vue';
   import CodeForm from './CodeForm.vue';
   import { ref, watch } from 'vue';
   import * as AuthApi from '@/http/auth';
@@ -95,7 +95,7 @@
 </script>
 
 <style scoped lang="scss">
-  .order-card {
+  .auth-card {
     position: relative;
     max-width: 500px;
     padding: 60px 20px 30px;
