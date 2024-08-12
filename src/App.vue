@@ -8,6 +8,7 @@
         <About />
         <Designers />
         <Order />
+        <CommentSlider />
         <Faq />
         <Footer />
       </main>
@@ -23,4 +24,5 @@
   import Faq from '@/components/Faq.vue';
   import Order from '@/components/Order.vue';
   import Footer from '@/components/Footer.vue';
+  import CommentSlider from '@/components/Comments/Slider/index.vue';
 </script>
