@@ -9,13 +9,7 @@
           <Calendar v-model="orderDate" :disabledDates="disabledDates" />
         </div>
         <div class="order-block__right">
-          <BaseSelect
-            class="order-block__select"
-            v-model="designer"
-            label="Стилист"
-            emptyLabel="Выберите стилиста"
-            :options="designers"
-          />
+          <SelectDesigners class="order-block__select" v-model="designer" />
           <div class="current-date order-block__curdt">
             <div class="current-date__label">Дата</div>
             <div class="current-date__value">{{ orderDateLabel }}</div>
@@ -43,16 +37,17 @@
   import Calendar from './Calendar.vue';
   import SuccessModal from './CreateOrder/SuccessModal.vue';
   import useAuth from '@/composables/useAuth';
-  import * as designersAPI from '@/http/designers';
+  import useDataDesigners from '@/composables/useDataDesigners';
+  import SelectDesigners from '@/components/Select/Designers.vue';
   import * as OrderAPI from '@/http/order';
   import { useNotification } from "@kyvg/vue3-notification";
   import { dateToIso, dateToLocale } from '@/helpers';
 
-  const { notify }  = useNotification();
+  const { notify } = useNotification();
+
+  const { data } = useDataDesigners();
 
   const auth = useAuth();
-
-  const { data } = await designersAPI.all();
 
   const orderDate = ref('');
 
@@ -67,11 +62,6 @@
   const orderDateLabel = computed(() => {
     if(!orderDate.value) return 'Выберите дату';
     return dateToLocale(new Date(orderDate.value));
-  });
-
-  const designers = computed(() => {
-    if(!data.results) return [];
-    return data.results.map(designer => ({ value: designer.id, label: designer.title }));
   });
 
   const currentDesigner = computed(() => {
