@@ -28,7 +28,7 @@
             :options="timeSlots"
             :disabled="!designer || !orderDate"
           />
-          <BaseButton theme="black" :disabled="orderDate === '' || designer === null || orderPending" @click="tryOrder">
+          <BaseButton theme="black" :disabled="orderDate === '' || designer === null || orderPending" @click="createOrderAction">
             Записаться
           </BaseButton>
         </div>
@@ -128,7 +128,6 @@
   });
 
   async function createOrder(user) {
-    auth.showedModal.value = false;
     orderPending.value = true;
 
     try {
@@ -162,18 +161,11 @@
     }
   }
 
+  const createOrderAction = auth.addAction(createOrder);
+
   function finish() {
     orderDate.value = '';
     designer.value = null;
-  }
-
-  async function tryOrder() {
-    if(auth.isAuth.value) {
-      await createOrder(auth.user.value);
-    } else {
-      auth.showedModal.value = true;
-      auth.successEvent.on(createOrder, { once: true });
-    }
   }
 
   watch(designer, () => {

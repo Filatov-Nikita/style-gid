@@ -20,6 +20,20 @@ export function init() {
     successEvent.trigger(user);
   }
 
+  function addAction(fn) {
+    return function() {
+      if(isAuth.value) {
+        fn(user.value);
+      } else {
+        showedModal.value = true;
+        successEvent.on((user) => {
+          showedModal.value = false;
+          fn(user);
+        }, { once: true });
+      }
+    }
+  }
+
   watch(showedModal, (val) => {
     if(!val) successEvent.removeAll();
   });
@@ -29,6 +43,7 @@ export function init() {
     isAuth,
     user,
     successEvent,
+    addAction,
     logout,
     onComplete,
   };

@@ -24,7 +24,7 @@
             <ShowAllCard @click="showedCommentModal = true" />
           </SwiperSlide>
         </Swiper>
-        <BaseButton @click="showedCreateModal = true">Оставить отзыв</BaseButton>
+        <BaseButton @click="showCreateCommentAction">Оставить отзыв</BaseButton>
         <CreateModal v-model="showedCreateModal" />
         <ShowOneModal v-model="showedCommentModal" />
       </div>
@@ -40,9 +40,11 @@
   import ShowOneModal from '../ShowOneModal/index.vue';
   import SwiperNav from '@/components/SwiperNav/index.vue';
   import useSwiperNav from '@/composables/useSwiperNav';
+  import useAuth from '@/composables/useAuth';
   import * as CommentsAPI from '@/http/comments';
   import { ref } from 'vue';
 
+  const auth = useAuth();
   const { data } = await CommentsAPI.all();
   const comments = ref(data.results ?? []);
   const showedCreateModal = ref(false);
@@ -63,6 +65,12 @@
     prev,
     next,
   } = useSwiperNav(swiper);
+
+  function showCreateComment() {
+    showedCreateModal.value = true;
+  }
+
+  const showCreateCommentAction = auth.addAction(showCreateComment);
 </script>
 
 <style scoped lang="scss">
