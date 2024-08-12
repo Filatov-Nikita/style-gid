@@ -27,14 +27,12 @@
                 <span>{{ counter.current }}</span><span>/</span><span class="counter-block__total">{{ counter.total }}</span>
               </div>
             </div>
-            <div class="slider-buttons">
-              <button class="slider-btn" :disabled="!canPrev" @click="prev">
-                <BaseIcon :color="canPrev ? '#000000' : '#BEBEBE'" class="slider-btn__icon" name="slider-left" />
-              </button>
-              <button class="slider-btn" :disabled="!canNext" @click="next">
-                <BaseIcon :color="canNext ? '#000000' : '#BEBEBE'" class="slider-btn__icon" name="slider-right" />
-              </button>
-            </div>
+            <SwiperNav
+              :canPrev="canPrev"
+              :canNext="canNext"
+              @prev="prev"
+              @next="next"
+            />
           </div>
         </div>
       </div>
@@ -47,6 +45,8 @@
   import { Swiper, SwiperSlide } from 'swiper/vue';
   import { computed, ref } from 'vue';
   import { numWithZero } from '@/helpers';
+  import SwiperNav from '@/components/SwiperNav/index.vue';
+  import useSwiperNav from '@/composables/useSwiperNav';
   import 'swiper/css';
   import 'swiper/css/effect-fade';
 
@@ -68,9 +68,15 @@
 
   const swiper = ref(null);
 
-  const currentInd = ref(0);
-  const canNext = ref(false);
-  const canPrev = ref(false);
+  const {
+    currentInd,
+    canPrev,
+    canNext,
+    updateActions,
+    onSliderChange,
+    prev,
+    next,
+  } = useSwiperNav(swiper);
 
   const total = computed(() => {
     return props.persons.length;
@@ -83,38 +89,8 @@
     }
   });
 
-  function updateActions() {
-    if(swiper.value === null) return;
-    canNext.value = !swiper.value.isEnd;
-    canPrev.value = !swiper.value.isBeginning;
-  }
-
   function onSwiper(swr) {
     swiper.value = swr;
-    updateActions();
-  }
-
-  function onSliderChange() {
-    updateInd();
-    updateActions();
-  }
-
-  function updateInd() {
-    if(swiper.value === null) return;
-    currentInd.value = swiper.value.activeIndex;
-  }
-
-  function next() {
-    if(swiper.value === null) return;
-    swiper.value.slideNext();
-    updateInd();
-    updateActions();
-  }
-
-  function prev() {
-    if(swiper.value === null) return;
-    swiper.value.slidePrev();
-    updateInd();
     updateActions();
   }
 </script>
@@ -270,29 +246,6 @@
 
     &__total {
       color: #A2A2A2;
-    }
-  }
-
-  .slider-buttons {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .slider-btn {
-    width: 34px;
-    height: 34px;
-    line-height: 34px;
-    border-radius: 50%;
-    background-color: #EDEDED;
-    text-align: center;
-    font-size: 0px;
-    @apply tw-text-black;
-
-    &__icon {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
     }
   }
 
