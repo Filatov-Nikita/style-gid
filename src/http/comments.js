@@ -12,8 +12,12 @@ export function showLast() {
   return axios.get(`account/stylist/comment`);
 }
 
-export function create(body) {
-  return axios.post(`account/save/stylist/comment`, body);
+export function create(token, body) {
+  return axios.post(
+    'account/save/stylist/comment',
+    body,
+    { headers: { 'Authorization': 'Bearer ' + token } },
+  );
 }
 
 export function remove(body) {

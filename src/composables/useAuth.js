@@ -16,6 +16,12 @@ export function init() {
     User.clean();
   }
 
+  function login(res) {
+    User.save(res);
+    user.value = res;
+    isAuth.value = true;
+  }
+
   function onComplete(user) {
     successEvent.trigger(user);
   }
@@ -44,6 +50,7 @@ export function init() {
     user,
     successEvent,
     addAction,
+    login,
     logout,
     onComplete,
   };

@@ -19,7 +19,7 @@
   </BaseModal>
 </template>
 
-<script setup lang="ts">
+<script setup>
   import { computed } from 'vue';
   import { dateToLocale } from '@/helpers';
 

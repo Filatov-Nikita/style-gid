@@ -42,6 +42,7 @@
   import * as OrderAPI from '@/http/order';
   import { useNotification } from "@kyvg/vue3-notification";
   import { dateToIso, dateToLocale } from '@/helpers';
+  import useForm from '@/composables/useForm';
 
   const { notify } = useNotification();
 
@@ -56,8 +57,6 @@
   const designer = ref(null);
 
   const successModal = ref(false);
-
-  const orderPending = ref(false);
 
   const orderDateLabel = computed(() => {
     if(!orderDate.value) return 'Выберите дату';
@@ -117,16 +116,15 @@
     ]
   });
 
-  async function createOrder(user) {
-    orderPending.value = true;
+  function orderFn(_form, { event: user }) {
+    return OrderAPI.create(user.api_token, {
+      event_id: currentEvent.value?.id,
+      user_id: user.id,
+    });
+  }
 
-    try {
-      const res = await OrderAPI.create(user.api_token, {
-        event_id: currentEvent.value?.id,
-        user_id: user.id,
-      });
-
-      if(!data.success) {
+  function successFn(res) {
+    if(!data.success) {
         notify({
           type: 'error',
           text: data.error,
@@ -135,21 +133,9 @@
         console.log(res);
         successModal.value = true;
       }
-    } catch (e) {
-      if(e.response.status === 401) {
-        auth.logout();
-      }
-
-      if(e.response && e.response.data && e.response.data.error) {
-        notify({
-          type: 'error',
-          text: e.response.data.error,
-        });
-      }
-    } finally {
-      orderPending.value = false;
-    }
   }
+
+  const { pending: orderPending, onSubmit: createOrder } = useForm(orderFn, {}, successFn);
 
   const createOrderAction = auth.addAction(createOrder);
 

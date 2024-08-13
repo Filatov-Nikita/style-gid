@@ -19,71 +19,77 @@
   import CodeForm from './CodeForm.vue';
   import { ref, watch } from 'vue';
   import * as AuthApi from '@/http/auth';
-  import * as User from '@/helpers/user';
   import { useNotification } from "@kyvg/vue3-notification";
+  import useForm from '@/composables/useForm';
+  import useAuth from '@/composables/useAuth';
 
   const { notify }  = useNotification();
+
+  const auth = useAuth();
 
   const emit = defineEmits(['auth:completed']);
 
   const showed = defineModel('showed');
-
-  const authPending = ref(false);
-  const checkCodePending = ref(false);
 
   const step = ref('data');
 
   const authBody = ref({});
   const codeBody = ref({});
 
-  async function onAuth(body) {
-    authPending.value = true;
-
-    const { data } = await AuthApi.sendCode({
-      personal_data_agree: body.personal_data_agree,
-      email_subscribe_agree: body.email_subscribe_agree,
-      phone: body.phone,
-      g_token: body.g_token,
-    });
-
-    if(!data.success) {
-      notify({
-        type: 'error',
-        text: data.error,
+  const {
+    pending: authPending,
+    onSubmit: onAuth,
+  } = useForm(
+    (_, { event: body }) => {
+      return AuthApi.sendCode({
+        personal_data_agree: body.personal_data_agree,
+        email_subscribe_agree: body.email_subscribe_agree,
+        phone: body.phone,
+        g_token: body.g_token,
       });
-    } else {
-      authBody.value = body;
-      step.value = 'code';
-      console.log(data);
+    },
+    {},
+    ({ data }, { event: body }) => {
+      if(!data.success) {
+        notify({
+          type: 'error',
+          text: data.error,
+        });
+      } else {
+        authBody.value = body;
+        step.value = 'code';
+        console.log(data);
+      }
     }
+  );
 
-    authPending.value = false;
-  }
-
-  async function onCode({ code }) {
-    checkCodePending.value = true;
-
-    const { data } = await AuthApi.checkCode({
-      token: code,
-      personal_data_agree: authBody.value.personal_data_agree,
-      email_subscribe_agree: authBody.value.email_subscribe_agree,
-      phone: authBody.value.phone,
-      lastname: authBody.value.lastname,
-      firstname: authBody.value.firstname,
-    });
-
-    if(!data.success) {
-      notify({
-        type: 'error',
-        text: data.error,
+  const {
+    pending: checkCodePending,
+    onSubmit: onCode,
+  } = useForm(
+    (_, { event: { code } }) => {
+      return AuthApi.checkCode({
+        token: code,
+        personal_data_agree: authBody.value.personal_data_agree,
+        email_subscribe_agree: authBody.value.email_subscribe_agree,
+        phone: authBody.value.phone,
+        lastname: authBody.value.lastname,
+        firstname: authBody.value.firstname,
       });
-    } else {
-      User.save(data.results);
-      emit('auth:completed', data.results);
+    },
+    {},
+    ({ data }) => {
+      if(!data.success) {
+        notify({
+          type: 'error',
+          text: data.error,
+        });
+      } else {
+        auth.login(data.results);
+        emit('auth:completed', data.results);
+      }
     }
-
-    checkCodePending.value = false;
-  }
+  );
 
   watch(showed, (val) => {
     if(!val) {
