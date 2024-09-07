@@ -5,7 +5,8 @@ export function all() {
 }
 
 export function show(commentId) {
-  return axios.get(`account/stylist/comment/${commentId}`);
+  const part = commentId ? `/${commentId}` : '';
+  return axios.get(`account/stylist/comment${part}`);
 }
 
 export function showLast() {

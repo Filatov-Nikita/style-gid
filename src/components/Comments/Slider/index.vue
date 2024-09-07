@@ -17,16 +17,23 @@
           @swiper="onSwiper"
           @slideСhange="onSliderChange"
         >
-          <SwiperSlide v-for="comment in comments" :key="comment.id">
+          <SwiperSlide v-for="comment in commentsList" :key="comment.id">
             <Item :comment="comment" />
           </SwiperSlide>
-          <SwiperSlide class="comment-block__last-slide" key="show_all">
+          <SwiperSlide
+            v-if="lastComment"
+            class="comment-block__last-slide" key="show_all"
+          >
             <ShowAllCard @click="showedCommentModal = true" />
           </SwiperSlide>
         </Swiper>
         <BaseButton @click="showCreateCommentAction">Оставить отзыв</BaseButton>
         <CreateModal v-model="showedCreateModal" />
-        <ShowOneModal v-model="showedCommentModal" />
+        <ShowOneModal
+          v-if="lastComment"
+          v-model="showedCommentModal"
+          :commentId="lastComment.id"
+        />
       </div>
     </div>
   </section>
@@ -42,13 +49,23 @@
   import useSwiperNav from '@/composables/useSwiperNav';
   import useAuth from '@/composables/useAuth';
   import * as CommentsAPI from '@/http/comments';
-  import { ref } from 'vue';
+  import { computed, ref } from 'vue';
 
   const auth = useAuth();
   const { data } = await CommentsAPI.all();
   const comments = ref(data.results ?? []);
   const showedCreateModal = ref(false);
   const showedCommentModal = ref(false);
+
+  const commentsList = computed(() => {
+    if(comments.value.length === 0) return [];
+    return [ ...comments.value ].reverse().slice(0, 8);
+  });
+
+  const lastComment = computed(() => {
+    if(commentsList.value.length === 0) return null;
+    return commentsList.value[ commentsList.value.length - 1 ];
+  });
 
   const swiper = ref(null);
 
