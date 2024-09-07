@@ -13,3 +13,16 @@ export function dateToLocale(date) {
     day: '2-digit',
   });
 }
+
+export function fileToBase64(file) {
+  return new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+      res(reader.result);
+    };
+    reader.onerror = function(error) {
+      rej(error);
+    };
+  });
+}

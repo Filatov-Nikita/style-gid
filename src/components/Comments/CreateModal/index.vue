@@ -2,9 +2,19 @@
   <BaseModal v-model="model">
     <BaseModalCard class="tw-p-6">
       <form @submit.prevent="onSubmit">
-        <SelectDesigners class="tw-mb-4" v-model="form.activity_id" />
-        <BaseTextarea label="Текст" v-model="form.message" placeholder="Текст отзыва" />
-        <BaseButton class="tw-mt-4" :disabled="disabledSubmit">Отправить</BaseButton>
+        <SelectDesigners class="tw-mb-4" size="sm" v-model="form.activity_id" />
+        <BaseTextarea class="tw-mb-4" label="Текст" v-model="form.message" placeholder="Текст отзыва" />
+        <BaseFileInput
+          multiple
+          label="Фото"
+          caption="Максимум 4 файла, до 5мб"
+          placeholder="Загрузите фото"
+          accept="image/jpeg, image/png"
+          :maxFiles="4"
+          :maxSize="5000000"
+          @change="onPhoto"
+        />
+        <BaseButton class="tw-mt-8" :disabled="disabledSubmit">Отправить</BaseButton>
       </form>
     </BaseModalCard>
   </BaseModal>
@@ -17,6 +27,7 @@
   import * as CommentsAPI from '@/http/comments';
   import { useNotification } from "@kyvg/vue3-notification";
   import useForm from '@/composables/useForm';
+  import { fileToBase64 } from '@/helpers';
 
   const { notify } = useNotification();
 
@@ -45,11 +56,23 @@
     {
       message: '',
       activity_id: null,
+      photos: [],
     },
     successFn,
   );
 
   const disabledSubmit = computed(() => {
-    return form.message === '' || form.activity_id === null || pending.value;
+    return form.message === '' || form.activity_id === null || form.photos.length === 0 || pending.value;
   });
+
+  async function onPhoto(files) {
+    const filesBase64 = await Promise.all(files.map(async (f) => {
+      return {
+        ext: f.name.split('.').pop(),
+        mime: f.type,
+        data: await fileToBase64(f),
+      }
+    }));
+    form.photos = filesBase64;
+  }
 </script>
