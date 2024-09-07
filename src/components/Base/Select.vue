@@ -1,6 +1,14 @@
 <template>
   <div class="tw-relative app-select-cmp">
-    <div class="app-select" :class="{ 'app-select--disabled': disabled }" @click="showed = !showed">
+    <div
+      class="app-select"
+      :class="{
+        'app-select--disabled': disabled,
+        'app-select--md': size === 'md',
+        'app-select--sm': size === 'sm',
+      }"
+      @click="showed = !showed"
+    >
       <div class="app-select__label">{{ label }}</div>
       <div class="app-select__wrap">
         <span class="app-select__val">{{ currentText }}</span>
@@ -9,10 +17,21 @@
         </span>
       </div>
     </div>
-    <div class="app-dropdown" v-if="showed">
+    <div
+      v-if="showed"
+      class="app-dropdown"
+      :class="{
+        'app-dropdown--md': size === 'md',
+        'app-dropdown--sm': size === 'sm',
+      }"
+    >
       <div
         class="app-option"
-        :class="{ 'app-option--active': model === option.value }"
+        :class="{
+          'app-option--active': model === option.value,
+          'app-option--md': size === 'md',
+          'app-option--sm': size === 'sm',
+        }"
         v-for="option in options"
         @click="onClick(option)"
       >
@@ -43,6 +62,10 @@
     disabled: {
       default: false,
       type: Boolean,
+    },
+    size: {
+      default: 'md',
+      type: String,
     }
   });
 
@@ -80,37 +103,67 @@
 
 <style scoped lang="scss">
   .app-select {
+    &--md &__label {
+      margin-bottom: 14px;
+      line-height: 1.35;
+      @apply tw-text-20;
+    }
+
+    &--sm &__label {
+      font-size: 16px;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      @apply tw-text-black tw-font-medium;
+    }
 
     &--disabled {
       pointer-events: none;
       opacity: 0.6;
     }
 
-    &__label {
-
-    }
-
-    &__wrap {
-      border: 1px solid #C3C3C3;
+    &--md &__wrap {
       padding: 20px;
-      cursor: pointer;
-      user-select: none;
-      display: flex;
-      align-items: center;
-
       @include sm {
         padding: 12px 20px;
       }
     }
 
-    &__val {
-      flex-grow: 1;
+    &--sm &__wrap {
+      min-height: 50px;
+      padding: 8px 16px;
+    }
+
+    &--md &__val {
       line-height: 1.35;
       @apply tw-text-24;
-
       @include sm {
         @apply tw-text-20;
       }
+    }
+
+    &--sm &__val {
+      line-height: 1.2;
+      @apply tw-text-16;
+    }
+
+    &__wrap {
+      border: 1px solid #C3C3C3;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        @apply tw-border-black;
+      }
+
+      &:focus {
+        @apply tw-border-black;
+      }
+    }
+
+    &__val {
+      flex-grow: 1;
     }
 
     &__icon-wrap {
@@ -122,12 +175,6 @@
         transform: rotate(180deg);
       }
     }
-
-    &__label {
-      margin-bottom: 14px;
-      line-height: 1.35;
-      @apply tw-text-20;
-    }
   }
 
   .app-dropdown {
@@ -135,14 +182,20 @@
     max-height: 300px;
     overflow-x: hidden;
     border: 1px solid #C3C3C3;
-    padding: 12px;
     position: absolute;
     top: calc(100% + 10px);
     left: 0px;
     z-index: 100;
     @apply tw-bg-white;
 
-    @include sm {
+    &--md {
+      padding: 12px;
+      @include sm {
+        padding: 8px;
+      }
+    }
+
+    &--sm {
       padding: 8px;
     }
   }
@@ -150,13 +203,26 @@
   .app-option {
     cursor: pointer;
     user-select: none;
-    padding: 8px;
-    line-height: 1.35;
-    @apply tw-text-24;
 
-    @include sm {
-      padding: 6px;
-      @apply tw-text-20;
+    &:hover {
+      color: #959595;
+    }
+
+    &--md {
+      padding: 8px;
+      line-height: 1.35;
+      @apply tw-text-24;
+
+      @include sm {
+        padding: 6px;
+        @apply tw-text-20;
+      }
+    }
+
+    &--sm {
+      padding: 8px;
+      line-height: 1.2;
+      @apply tw-text-16;
     }
 
     &--active {
