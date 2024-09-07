@@ -6,10 +6,15 @@
       <span class="comment-item__des-name">{{ comment.activity.title }}</span>
     </div>
     <p class="comment-item__text">{{ comment.message }}</p>
+    <div class="comment-item__photos">
+      <PhotoList v-if="comment.photos" :photos="comment.photos" />
+    </div>
   </article>
 </template>
 
 <script setup>
+  import PhotoList from '../PhotoList/index.vue';
+
   defineProps({
     comment: {
       required: true,
@@ -46,8 +51,11 @@
 
     &__text {
       line-height: 1.3;
-      margin-bottom: 40px;
       @apply tw-text-16;
+    }
+
+    &__photos {
+      margin-top: 40px;
     }
   }
 </style>
