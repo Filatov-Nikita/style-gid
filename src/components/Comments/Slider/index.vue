@@ -15,7 +15,18 @@
           <Swiper
             class="comment-block__slider"
             :spaceBetween="20"
-            :slidesPerView="2.3"
+            :slidesPerView="1"
+            :breakpoints="{
+              768: {
+                slidesPerView: 1.3,
+              },
+              1024: {
+                slidesPerView: 2,
+              },
+              1440: {
+                slidesPerView: 2.3,
+              }
+            }"
             @swiper="onSwiper"
             @slideChange="onSliderChange"
           >
@@ -62,7 +73,7 @@
 
   const commentsList = computed(() => {
     if(comments.value.length === 0) return [];
-    return [ ...comments.value ].reverse().slice(0, 8);
+    return comments.value.slice(-8).reverse();
   });
 
   const lastComment = computed(() => {
@@ -97,6 +108,10 @@
   .comment-block {
     &__wrap {
       padding-bottom: 150px;
+
+      @include sm {
+        padding-bottom: 70px;
+      }
     }
 
     &__title {
@@ -105,6 +120,10 @@
 
     &__slider {
       margin-bottom: 50px;
+
+      @include sm {
+        margin-bottom: 40px;
+      }
     }
 
     &__sw-nav {
@@ -113,6 +132,10 @@
 
     &__last-slide, &__item {
       min-height: 410px !important;
+
+      @include lg {
+        min-height: 375px !important;
+      }
     }
 
     &__empty {

@@ -63,11 +63,21 @@
       line-height: 1.3;
       margin-bottom: 18px;
       @apply tw-text-16;
+
+      @include sm {
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 4px;
+      }
     }
 
     &__des-pos {
       flex-shrink: 0;
       color: #858585;
+
+      @include sm {
+        width: 100%;
+      }
     }
 
     &__text {
