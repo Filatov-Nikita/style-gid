@@ -3,30 +3,33 @@
     <div class="wrapper">
       <div class="comment-block__wrap">
         <h2 class="h1 comment-block__title">Отзывы</h2>
-        <SwiperNav
-          class="comment-block__sw-nav tw-justify-end"
-          :canPrev="canPrev"
-          :canNext="canNext"
-          @prev="prev"
-          @next="next"
-        />
-        <Swiper
-          class="comment-block__slider"
-          :spaceBetween="20"
-          :slidesPerView="2.3"
-          @swiper="onSwiper"
-          @slideChange="onSliderChange"
-        >
-          <SwiperSlide class="comment-block__slide" v-for="comment in commentsList" :key="comment.id">
-            <Item class="comment-block__item" :comment="comment" />
-          </SwiperSlide>
-          <SwiperSlide
-            v-if="lastComment"
-            key="show_all"
+        <p class="comment-block__empty" v-if="commentsList.length === 0">Оставьте отзыв, вы будете первым!</p>
+        <template v-else>
+          <SwiperNav
+            class="comment-block__sw-nav tw-justify-end"
+            :canPrev="canPrev"
+            :canNext="canNext"
+            @prev="prev"
+            @next="next"
+          />
+          <Swiper
+            class="comment-block__slider"
+            :spaceBetween="20"
+            :slidesPerView="2.3"
+            @swiper="onSwiper"
+            @slideChange="onSliderChange"
           >
-            <ShowAllCard class="comment-block__last-slide" @click="showedCommentModal = true" />
-          </SwiperSlide>
-        </Swiper>
+            <SwiperSlide class="comment-block__slide" v-for="comment in commentsList" :key="comment.id">
+              <Item class="comment-block__item" :comment="comment" />
+            </SwiperSlide>
+            <SwiperSlide
+              v-if="lastComment"
+              key="show_all"
+            >
+              <ShowAllCard class="comment-block__last-slide" @click="showedCommentModal = true" />
+            </SwiperSlide>
+          </Swiper>
+        </template>
         <BaseButton @click="showCreateCommentAction">Оставить отзыв</BaseButton>
         <CreateModal v-model="showedCreateModal" />
         <ShowOneModal
@@ -110,6 +113,12 @@
 
     &__last-slide, &__item {
       min-height: 410px !important;
+    }
+
+    &__empty {
+      padding: 80px 0;
+      line-height: 1.4;
+      @apply tw-text-20;
     }
   }
 </style>
