@@ -1,6 +1,9 @@
 <template>
   <BaseModal v-model="model">
-    <BaseModalCard class="tw-p-6">
+    <BaseModalCard class="card">
+      <button class="close-modal" @click="model = false">
+        <BaseIcon class="tw-w-full tw-h-full" name="close" color="#151515" />
+      </button>
       <form @submit.prevent="onSubmit">
         <SelectDesigners class="tw-mb-4" size="sm" v-model="form.activity_id" />
         <BaseTextarea class="tw-mb-4" label="Текст" v-model="form.message" placeholder="Текст отзыва" />
@@ -76,3 +79,11 @@
     form.photos = filesBase64;
   }
 </script>
+
+<style scoped lang="scss">
+  .card {
+    position: relative;
+    max-width: 600px;
+    padding: 48px 20px 30px;
+  }
+</style>

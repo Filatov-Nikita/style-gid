@@ -1,7 +1,7 @@
 <template>
   <BaseModal v-model="showed">
     <BaseModalCard class="auth-card">
-      <button class="auth-card__close" @click="showed = false">
+      <button class="close-modal" @click="showed = false">
         <BaseIcon class="tw-w-full tw-h-full" name="close" color="#151515" />
       </button>
       <div class="auth-card__body">

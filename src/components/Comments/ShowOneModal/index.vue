@@ -1,6 +1,9 @@
 <template>
   <BaseModal v-model="model">
     <BaseModalCard class="card">
+      <button class="close-modal" @click="model = false">
+        <BaseIcon class="tw-w-full tw-h-full" name="close" color="#151515" />
+      </button>
       <div class="comment">
         <div class="nav-btn" :class="{ 'nav-btn--disabled': nextId === null }" @click="load(nextId)">
           <SwiperBtn dir="left" :disabled="nextId === null" />
@@ -62,6 +65,7 @@
   }
 
   .card {
+    position: relative;
     max-width: 740px;
     padding: 60px 40px;
   }
