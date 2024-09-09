@@ -42,7 +42,6 @@
 
   watch(model, (val) => {
     if(val && data.value === null) {
-      console.log(_commentId.value);
       load(_commentId.value);
     }
   });
@@ -68,22 +67,6 @@
     position: relative;
     max-width: 740px;
     padding: 60px 40px;
-  }
-
-  .nav-btn {
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    user-select: none;
-
-    &:hover {
-      opacity: 0.7;
-    }
-
-    &--disabled {
-      pointer-events: none;
-    }
   }
 
   .loader {

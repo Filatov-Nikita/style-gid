@@ -2,8 +2,9 @@
   <div class="list">
     <Item
       class="list-item"
-      v-for="photo in photos"
+      v-for="(photo, index) in photos"
       :photo="photo"
+      @click="$emit('change:photo', index)"
     />
   </div>
 </template>
@@ -17,6 +18,8 @@
       type: Array,
     }
   });
+
+  defineEmits([ 'change:photo' ]);
 </script>
 
 <style scoped lang="scss">
@@ -30,5 +33,6 @@
     width: calc(25% - 10px);
     height: 136px;
     margin: 5px;
+    cursor: pointer;
   }
 </style>

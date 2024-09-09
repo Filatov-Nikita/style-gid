@@ -12,14 +12,17 @@
       </TextClamp>
     </div>
     <div class="comment-item__photos">
-      <PhotoList v-if="comment.photos" :photos="comment.photos" />
+      <PhotoList v-if="comment.photos" :photos="comment.photos" @change:photo="changePhoto" />
     </div>
+    <PhotoModal v-if="comment.photos" v-model="showedPhoto" :photos="comment.photos" :activePhoto="activePhoto" />
   </article>
 </template>
 
 <script setup>
   import PhotoList from '../PhotoList/index.vue';
   import TextClamp from '@/components/TextClamp.vue';
+  import PhotoModal from '../PhotoModal/index.vue';
+  import { ref } from 'vue';
 
   defineProps({
     comment: {
@@ -31,6 +34,14 @@
       type: Boolean,
     }
   });
+
+  const showedPhoto = ref(false);
+  const activePhoto = ref(0);
+
+  function changePhoto(index) {
+    activePhoto.value = index;
+    showedPhoto.value = true;
+  }
 </script>
 
 <style scoped lang="scss">

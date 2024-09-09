@@ -65,4 +65,20 @@
       opacity: 0.6;
     }
   }
+
+  .nav-btn {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    user-select: none;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    &--disabled {
+      pointer-events: none;
+    }
+  }
 }
