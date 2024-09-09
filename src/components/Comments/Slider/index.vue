@@ -13,18 +13,18 @@
         <Swiper
           class="comment-block__slider"
           :spaceBetween="20"
-          :slidesPerView="2.5"
+          :slidesPerView="2.3"
           @swiper="onSwiper"
-          @slideСhange="onSliderChange"
+          @slideChange="onSliderChange"
         >
-          <SwiperSlide v-for="comment in commentsList" :key="comment.id">
-            <Item :comment="comment" />
+          <SwiperSlide class="comment-block__slide" v-for="comment in commentsList" :key="comment.id">
+            <Item class="comment-block__item" :comment="comment" />
           </SwiperSlide>
           <SwiperSlide
             v-if="lastComment"
-            class="comment-block__last-slide" key="show_all"
+            key="show_all"
           >
-            <ShowAllCard @click="showedCommentModal = true" />
+            <ShowAllCard class="comment-block__last-slide" @click="showedCommentModal = true" />
           </SwiperSlide>
         </Swiper>
         <BaseButton @click="showCreateCommentAction">Оставить отзыв</BaseButton>
@@ -104,12 +104,12 @@
       margin-bottom: 50px;
     }
 
-    &__last-slide {
-      height: auto;
-    }
-
     &__sw-nav {
       margin-bottom: 25px;
+    }
+
+    &__last-slide, &__item {
+      min-height: 410px !important;
     }
   }
 </style>

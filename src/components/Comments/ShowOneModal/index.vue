@@ -5,8 +5,10 @@
         <div class="nav-btn" :class="{ 'nav-btn--disabled': nextId === null }" @click="load(nextId)">
           <SwiperBtn dir="left" :disabled="nextId === null" />
         </div>
-        <div class="tw-grow tw-min-h-[300px]" v-if="loading">loading...</div>
-        <Item class="comment__item" v-else-if="data" :comment="data" />
+        <div class="loader" v-if="loading">
+          <Spinner />
+        </div>
+        <Item class="comment__item" v-else-if="data" :comment="data" fullText />
         <div class="nav-btn" :class="{ 'nav-btn--disabled': prevId === null }" @click="load(prevId)">
           <SwiperBtn dir="right" :disabled="prevId === null" />
         </div>
@@ -20,6 +22,7 @@
   import useComment from './model/useComment';
   import Item from '../Item/index.vue';
   import SwiperBtn from '@/components/SwiperNav/Btn.vue';
+  import Spinner from '@/components/Spinner.vue';
 
   const props = defineProps({
     commentId: {
@@ -53,10 +56,13 @@
 
     &__item {
       flex-grow: 1;
+      height: 390px;
+      overflow-x: hidden;
     }
   }
 
   .card {
+    max-width: 740px;
     padding: 60px 40px;
   }
 
@@ -67,8 +73,20 @@
     justify-content: center;
     user-select: none;
 
+    &:hover {
+      opacity: 0.7;
+    }
+
     &--disabled {
       pointer-events: none;
     }
+  }
+
+  .loader {
+    flex-grow: 1;
+    height: 390px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>

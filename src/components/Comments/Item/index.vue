@@ -5,7 +5,12 @@
       <span class="comment-item__des-pos">Стилист</span>
       <span class="comment-item__des-name">{{ comment.activity.title }}</span>
     </div>
-    <p class="comment-item__text">{{ comment.message }}</p>
+    <div>
+      <p class="comment-item__text" v-if="fullText">{{ comment.message }}</p>
+      <TextClamp v-else class="comment-item__text" :lines="4">
+        {{ comment.message }}
+      </TextClamp>
+    </div>
     <div class="comment-item__photos">
       <PhotoList v-if="comment.photos" :photos="comment.photos" />
     </div>
@@ -14,11 +19,16 @@
 
 <script setup>
   import PhotoList from '../PhotoList/index.vue';
+  import TextClamp from '@/components/TextClamp.vue';
 
   defineProps({
     comment: {
       required: true,
       type: Object,
+    },
+    fullText: {
+      default: false,
+      type: Boolean,
     }
   });
 </script>
@@ -50,6 +60,7 @@
     }
 
     &__text {
+      min-height: 105px;
       line-height: 1.3;
       @apply tw-text-16;
     }
