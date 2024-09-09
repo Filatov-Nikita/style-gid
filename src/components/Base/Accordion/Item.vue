@@ -45,6 +45,11 @@
       gap: 20px;
       cursor: pointer;
       user-select: none;
+      transition: opacity 100ms;
+
+      &:hover {
+        opacity: 0.7;
+      }
 
       @include sm {
         padding-top: 17px;

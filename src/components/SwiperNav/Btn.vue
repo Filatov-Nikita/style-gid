@@ -28,6 +28,14 @@
     font-size: 0px;
     @apply tw-text-black;
 
+    &:disabled {
+      opacity: 1 !important;
+    }
+
+    &:hover {
+      opacity: 0.7;
+    }
+
     &__icon {
       display: inline-block;
       width: 20px;

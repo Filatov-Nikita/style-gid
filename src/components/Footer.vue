@@ -106,5 +106,9 @@
   .soc-one {
     width: 32px;
     height: 32px;
+
+    &:hover {
+      opacity: 0.7;
+    }
   }
 </style>
