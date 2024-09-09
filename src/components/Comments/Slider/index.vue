@@ -142,6 +142,10 @@
       padding: 80px 0;
       line-height: 1.4;
       @apply tw-text-20;
+
+      @include sm {
+        padding: 60px 0;
+      }
     }
   }
 </style>
