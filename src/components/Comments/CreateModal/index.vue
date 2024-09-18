@@ -65,7 +65,7 @@
   );
 
   const disabledSubmit = computed(() => {
-    return form.message === '' || form.activity_id === null || form.photos.length === 0 || pending.value;
+    return form.message === '' || form.activity_id === null || pending.value;
   });
 
   async function onPhoto(files) {
