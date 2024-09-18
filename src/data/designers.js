@@ -10,6 +10,10 @@ export const list = [
       height: 1170,
       url: '/images/designers/2.jpg',
     },
+    video: {
+      mp4: '/videos/designers/1.mp4',
+      webm: '/videos/designers/1.webm',
+    },
   },
   {
     name: 'Руфина Шопингауэр',
@@ -21,6 +25,10 @@ export const list = [
       width: 899,
       height: 1170,
       url: '/images/designers/5.jpg',
+    },
+    video: {
+      mp4: '/videos/designers/1.mp4',
+      webm: '/videos/designers/1.webm',
     },
   },
   {
@@ -34,6 +42,10 @@ export const list = [
       height: 1170,
       url: '/images/designers/7.jpg',
     },
+    video: {
+      mp4: '/videos/designers/1.mp4',
+      webm: '/videos/designers/1.webm',
+    },
   },
   {
     name: 'Гульнара Король',
@@ -45,6 +57,10 @@ export const list = [
       width: 899,
       height: 1170,
       url: '/images/designers/6.jpg',
+    },
+    video: {
+      mp4: '/videos/designers/1.mp4',
+      webm: '/videos/designers/1.webm',
     },
   },
   {
@@ -63,6 +79,10 @@ export const list = [
       height: 1170,
       url: '/images/designers/4.jpg',
     },
+    video: {
+      mp4: '/videos/designers/1.mp4',
+      webm: '/videos/designers/1.webm',
+    },
   },
   {
     name: 'Илюза Мурзагулова',
@@ -79,8 +99,11 @@ export const list = [
       height: 1170,
       url: '/images/designers/1.jpg',
     },
+    video: {
+      mp4: '/videos/designers/1.mp4',
+      webm: '/videos/designers/1.webm',
+    },
   },
-
   {
     name: 'Лида',
     description: 'Стилист, который вдохновляет на преображения',
@@ -93,6 +116,10 @@ export const list = [
       width: 899,
       height: 1170,
       url: '/images/designers/3.jpg',
+    },
+    video: {
+      mp4: '/videos/designers/1.mp4',
+      webm: '/videos/designers/1.webm',
     },
   },
 ];

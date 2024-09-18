@@ -21,6 +21,10 @@
           <p class="person-slide__name">{{ person.name }}</p>
           <p class="person-slide__label">{{ person.description }}</p>
           <p class="person-slide__text" v-html="person.body"></p>
+          <div class="person-slide__video video-block" v-if="person.video">
+            <p class="video-block__title">Видеоподборка образов от&nbsp;стилиста</p>
+            <BaseButton @click="showedVideo = person.video">Смотреть</BaseButton>
+          </div>
           <div class="person-slide__actions">
             <div class="counter-block person-slide__cnt">
               <div class="counter-block__wrap">
@@ -38,6 +42,7 @@
       </div>
     </SwiperSlide>
   </Swiper>
+  <PersonVideoModal :modelValue="showedVideo !== null" @update:modelValue="showedVideo = null" :video="showedVideo" />
 </template>
 
 <script setup>
@@ -47,6 +52,7 @@
   import { numWithZero } from '@/helpers';
   import SwiperNav from '@/components/SwiperNav/index.vue';
   import useSwiperNav from '@/composables/useSwiperNav';
+  import PersonVideoModal from './PersonVideoModal.vue';
   import 'swiper/css';
   import 'swiper/css/effect-fade';
 
@@ -64,6 +70,7 @@
     'effect': 'fade',
     'autoHeight': true,
     'allowTouchMove': true,
+    'autoHeight': true,
   });
 
   const swiper = ref(null);
@@ -77,6 +84,8 @@
     prev,
     next,
   } = useSwiperNav(swiper);
+
+  const showedVideo = ref(null);
 
   const total = computed(() => {
     return props.persons.length;
@@ -96,13 +105,7 @@
 </script>
 
 <style scoped lang="scss">
-  .person-slider {
-    height: 780px;
-
-    @include md {
-      height: auto;
-    }
-  }
+  .person-slider {}
 
   .person-slide {
     &__wrap {
@@ -141,10 +144,14 @@
       position: relative;
       flex-grow: 1;
       flex-basis: 600px;
-      padding-top: 87px;
+      padding-top: 30px;
+      padding-bottom: 40px;
+      display: flex;
+      flex-direction: column;
 
       @include lg {
         padding-top: 0px;
+        padding-bottom: 0px;
       }
 
       @include md {
@@ -176,6 +183,8 @@
     }
 
     &__text {
+      flex-grow: 1;
+      margin-bottom: 30px;
       @apply tw-text-20;
 
       @include sm {
@@ -184,22 +193,6 @@
     }
 
     &__actions {
-      position: absolute;
-      bottom: 120px;
-      left: 0px;
-      z-index: 10;
-
-      @include lg {
-        bottom: 0px;
-      }
-
-      @include md {
-        position: static;
-        bottom: auto;
-        left: auto;
-        margin-top: 20px;
-      }
-
       @include sm {
         display: none;
       }
@@ -210,6 +203,18 @@
 
       @include sm {
         margin-bottom: 16px;
+      }
+    }
+
+    &__video {
+      margin-bottom: 60px;
+
+      @include lg {
+        margin-bottom: 40px;
+      }
+
+      @include sm {
+        margin-bottom: 0px;
       }
     }
   }
@@ -282,6 +287,18 @@
       display: inline-block;
       width: 14px;
       height: 14px;
+    }
+  }
+
+  .video-block {
+    &__title {
+      line-height: 1.375;
+      margin-bottom: 16px;
+      @apply tw-text-24;
+
+      @include sm {
+        @apply tw-text-20;
+      }
     }
   }
 </style>
