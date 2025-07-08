@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import './assets/scss/app.scss';
+import 'animate.css';
 import BaseButton from './components/Base/Button.vue';
 import BaseIcon from './components/Base/Icon.vue';
 import BaseSelect from './components/Base/Select.vue';
