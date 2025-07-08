@@ -14,6 +14,7 @@ export default {
     },
     fontFamily: {
       'body': [ 'montserrat', 'Arial', 'sans-serif' ],
+      'druk': [ 'druk', 'Arial', 'sans-serif' ],
     },
     fontSize: {
       '16': '16px',
