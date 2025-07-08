@@ -9,7 +9,7 @@
           <SwiperBtn dir="left" :disabled="nextId === null" />
         </div>
         <div class="loader" v-if="loading">
-          <Spinner />
+          <BaseSpinner />
         </div>
         <Item class="comment__item" v-else-if="data" :comment="data" fullText />
         <div class="nav-btn" :class="{ 'nav-btn--disabled': prevId === null }" @click="load(prevId)">
@@ -25,7 +25,6 @@
   import useComment from './model/useComment';
   import Item from '../Item/index.vue';
   import SwiperBtn from '@/components/SwiperNav/Btn.vue';
-  import Spinner from '@/components/Spinner.vue';
 
   const props = defineProps({
     commentId: {

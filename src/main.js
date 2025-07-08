@@ -8,6 +8,7 @@ import BaseModal from './components/Base/Modal/index.vue';
 import BaseModalCard from './components/Base/Modal/Card.vue';
 import BaseInput from './components/Base/Input.vue';
 import BaseTextarea from './components/Base/Textarea.vue';
+import BaseSpinner from './components/Base/Spinner.vue';
 import FileInput from './components/Base/FileInput.vue';
 import Notifications from '@kyvg/vue3-notification';
 import VOrder from './plugins/order';
@@ -28,5 +29,6 @@ app.component('BaseModalCard', BaseModalCard);
 app.component('BaseInput', BaseInput);
 app.component('BaseTextarea', BaseTextarea);
 app.component('BaseFileInput', FileInput);
+app.component('BaseSpinner', BaseSpinner);
 
 app.mount('#app');
