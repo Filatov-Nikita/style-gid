@@ -13,7 +13,6 @@ export default {
       'red': '#FB3F4A',
     },
     fontFamily: {
-      'noto': [ 'noto', 'Arial', 'sans-serif' ],
       'body': [ 'montserrat', 'Arial', 'sans-serif' ],
     },
     fontSize: {
