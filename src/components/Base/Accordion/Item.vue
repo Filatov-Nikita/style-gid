@@ -8,14 +8,17 @@
         <BaseIcon class="tw-w-full tw-h-full" :name="showed ? 'accord-close' : 'accord-plus'" />
       </button>
     </div>
-    <div class="accord-item__body" v-if="showed">
-      <slot />
-    </div>
+    <SlideUpDown :active="showed" :duration="300">
+      <div class="accord-item__body">
+        <slot />
+      </div>
+    </SlideUpDown>
   </div>
 </template>
 
 <script setup>
   import { ref } from 'vue';
+  import SlideUpDown from 'vue-slide-up-down';
 
   const props = defineProps({
     showInitial: {
