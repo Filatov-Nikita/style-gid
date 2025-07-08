@@ -10,11 +10,15 @@ import BaseInput from './components/Base/Input.vue';
 import BaseTextarea from './components/Base/Textarea.vue';
 import FileInput from './components/Base/FileInput.vue';
 import Notifications from '@kyvg/vue3-notification';
+import VOrder from './plugins/order';
+import VScroll from './plugins/scroll';
 import 'virtual:svg-icons-register';
 
 const app = createApp(App);
 
 app.use(Notifications);
+app.use(VOrder);
+app.use(VScroll);
 
 app.component('BaseButton', BaseButton);
 app.component('BaseIcon', BaseIcon);
