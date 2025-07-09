@@ -2,7 +2,7 @@
   <section class="faq-block" id="faq">
     <div class="wrapper">
       <div class="faq-block__wrap">
-        <h2 class="h1 faq-block__title">Вопросы-ответы</h2>
+        <h2 class="h2 faq-block__title">Вопросы-ответы</h2>
         <div>
           <AccordItem class="faq-accord" v-for="item in list">
             <template #label>
@@ -24,19 +24,6 @@
 <style scoped lang="scss">
   .faq-block {
     @apply tw-bg-black;
-
-    &__wrap {
-      max-width: 950px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-top: 70px;
-      padding-bottom: 103px;
-
-      @include sm {
-        padding-top: 50px;
-        padding-bottom: 70px;
-      }
-    }
 
     &__title {
       margin-bottom: 26px;
