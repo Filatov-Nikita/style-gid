@@ -1,7 +1,7 @@
 <template>
   <section class="order-block" id="order">
     <div class="wrapper">
-      <h2 class="h1 order-block__title">
+      <h2 class="h2 order-block__title">
         Запись на&nbsp;услугу
       </h2>
       <div class="order-block__grid">
@@ -41,7 +41,6 @@
   import Calendar from './Calendar.vue';
   import SuccessModal from './CreateOrder/SuccessModal.vue';
   import useAuth from '@/composables/useAuth';
-  import useDataDesigners from '@/composables/useDataDesigners';
   import SelectDesigners from '@/components/Select/Designers.vue';
   import * as OrderAPI from '@/http/order';
   import { useNotification } from "@kyvg/vue3-notification";
@@ -185,74 +184,63 @@
       @include md {
         margin-bottom: 30px;
       }
-
-      @include sm {
-        margin-bottom: 20px;
-      }
     }
 
     &__grid {
+      --gap-x: 40px;
+      --gap-y: 40px;
+      --col1: 45%;
+      --col2: 55%;
       display: flex;
       flex-wrap: wrap;
-      gap: 84px;
+      column-gap: var(--gap-x);
+      row-gap: var(--gap-y);
 
       @include lg {
-        gap: 45px;
+        --col1: 55%;
+        --col2: 45%;
       }
 
-      @include sm {
-        gap: 30px;
+      @include md {
+        --col1: 100%;
+        --col2: 100%;
+        --gap-x: 0px;
       }
     }
 
     &__left {
-      flex-basis: 556px;
-
-      @include lg {
-        flex-basis: 450px;
-        flex-grow: 1;
-      }
-
-      @include md {
-        flex-basis: 100%;
-      }
+      width: calc(var(--col1) - (var(--gap-x) / 2));
     }
 
     &__right {
-      flex-basis: 433px;
-
-      @include lg {
-        flex-basis: 380px;
-        flex-grow: 1;
-      }
-
-      @include md {
-        flex-basis: 100%;
-      }
-
-      @include md {
-        order: -1;
-      }
+      width: calc(var(--col2) - (var(--gap-x) / 2));
     }
 
     &__curdt {
       margin-bottom: 30px;
 
       @include md {
+        margin-top: 20px;
         margin-bottom: 20px;
       }
     }
 
     &__select {
-      margin-bottom: 50px;
+      margin-bottom: 30px;
 
-      @include lg {
-        margin-bottom: 30px;
+      @include md {
+        margin-bottom: 20px;
       }
 
-      @include sm {
-        // margin-bottom: 30px;
+      &:last-of-type {
+        @include md {
+          margin-bottom: 32px;
+        }
       }
+    }
+
+    &__body {
+      max-width: 800px;
     }
   }
 
