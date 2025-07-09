@@ -7,25 +7,27 @@
       <div class="person-slide__wrap">
         <div class="person-slide__photo-wrap">
           <img class="person-slide__photo" :width="person.photo.width" :height="person.photo.height" :src="person.photo.url" loading="lazy" />
-          <button class="slider-mini-btn slider-mini-btn--left" :disabled="!canPrev" @click="prev">
-            <BaseIcon :color="canPrev ? '#000000' : '#BEBEBE'" class="slider-mini-btn__icon" name="slider-left" />
-          </button>
-          <button class="slider-mini-btn slider-mini-btn--right" :disabled="!canNext" @click="next">
-            <BaseIcon :color="canNext ? '#000000' : '#BEBEBE'" class="slider-mini-btn__icon" name="slider-right" />
-          </button>
+          <template v-if="!grid.md">
+            <button class="slider-mini-btn slider-mini-btn--left" :disabled="!canPrev" @click="prev">
+              <BaseIcon :color="canPrev ? '#000000' : '#BEBEBE'" class="slider-mini-btn__icon" name="slider-left" />
+            </button>
+            <button class="slider-mini-btn slider-mini-btn--right" :disabled="!canNext" @click="next">
+              <BaseIcon :color="canNext ? '#000000' : '#BEBEBE'" class="slider-mini-btn__icon" name="slider-right" />
+            </button>
+          </template>
         </div>
         <div class="person-slide__body">
-          <div class="counter-block-mini person-slide__cnt">
+          <div v-if="!grid.md" class="counter-block-mini person-slide__cnt">
             <span>{{ counter.current }}</span><span>/</span><span class="counter-block-mini__total">{{ counter.total }}</span>
           </div>
           <p class="person-slide__name">{{ person.name }}</p>
           <p class="person-slide__label">{{ person.description }}</p>
           <p class="person-slide__text" v-html="person.body"></p>
           <div class="person-slide__video video-block" v-if="person.video">
-            <p class="video-block__title">Видеоподборка образов от&nbsp;стилиста</p>
+            <p class="video-block__title">Видеовизитка</p>
             <BaseButton @click="showedVideo = person.video">Смотреть</BaseButton>
           </div>
-          <div class="person-slide__actions">
+          <div v-if="grid.md" class="person-slide__actions">
             <div class="counter-block person-slide__cnt">
               <div class="counter-block__wrap">
                 <span>{{ counter.current }}</span><span>/</span><span class="counter-block__total">{{ counter.total }}</span>
@@ -55,6 +57,7 @@
   import PersonVideoModal from './PersonVideoModal.vue';
   import 'swiper/css';
   import 'swiper/css/effect-fade';
+  import useAppGrid from '@/composables/useAppGrid';
 
   const props = defineProps({
     persons: {
@@ -72,6 +75,8 @@
     'allowTouchMove': true,
     'autoHeight': true,
   });
+
+  const grid = useAppGrid();
 
   const swiper = ref(null);
 
@@ -109,54 +114,50 @@
 
   .person-slide {
     &__wrap {
+      --gap-x: 40px;
+      --gap-y: 24px;
+      --col1: 40%;
+      --col2: 60%;
       display: flex;
-      gap: 40px;
+      flex-wrap: wrap;
+      column-gap: var(--gap-x);
+      row-gap: var(--gap-y);
       @apply tw-bg-white;
 
+      @include lg {
+        --col1: 50%;
+        --col2: 50%;
+      }
+
       @include md {
-        flex-wrap: wrap;
-        gap: 30px;
+        --col1: 100%;
+        --col2: 100%;
+        --gap-x: 0px;
       }
 
       @include sm {
-        gap: 6px;
+        --gap-y: 8px;
       }
     }
 
     &__photo-wrap {
-      flex-basis: 600px;
-      height: 780px;
-
-      @include sm {
-        position: relative;
-        height: auto;
-        flex-basis: 100%;
-      }
+      position: relative;
+      width: calc(var(--col1) - (var(--gap-x) / 2));
     }
 
     &__photo {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+
+      @include md {
+        max-width: 600px;
+      }
     }
 
     &__body {
+      width: calc(var(--col2) - (var(--gap-x) / 2));
       position: relative;
-      flex-grow: 1;
-      flex-basis: 600px;
-      padding-top: 30px;
-      padding-bottom: 40px;
       display: flex;
       flex-direction: column;
-
-      @include lg {
-        padding-top: 0px;
-        padding-bottom: 0px;
-      }
-
-      @include md {
-        flex-basis: 100%;
-      }
     }
 
     &__name {
@@ -173,7 +174,7 @@
 
     &__label {
       line-height: 1.35;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
       @apply tw-text-24;
 
       @include sm {
@@ -184,17 +185,12 @@
 
     &__text {
       flex-grow: 1;
+      max-width: 900px;
       margin-bottom: 30px;
       @apply tw-text-20;
 
       @include sm {
         @apply tw-text-16;
-      }
-    }
-
-    &__actions {
-      @include sm {
-        display: none;
       }
     }
 
@@ -207,7 +203,7 @@
     }
 
     &__video {
-      margin-bottom: 60px;
+      margin-bottom: 30px;
 
       @include lg {
         margin-bottom: 40px;
@@ -223,10 +219,6 @@
     line-height: 1.15;
     @apply tw-text-30 tw-font-light;
 
-    @include sm {
-      display: none;
-    }
-
     &__wrap {
       margin-bottom: 20px;
 
@@ -241,7 +233,6 @@
   }
 
   .counter-block-mini {
-    display: none;
     line-height: 1.15;
     @apply tw-text-20 tw-font-light;
 
@@ -255,7 +246,6 @@
   }
 
   .slider-mini-btn {
-    display: none;
     width: 24px;
     height: 24px;
     line-height: 24px;

@@ -2,7 +2,7 @@
   <BaseModal v-model="model">
     <div class="card">
       <button class="close-modal" @click="model = false">
-        <BaseIcon class="tw-w-full tw-h-full" name="close" color="#151515" />
+        <BaseIcon class="tw-w-full tw-h-full" name="close" color="#ffffff" />
       </button>
       <video class="video" v-if="video" muted loop autoplay controls>
         <source
@@ -32,14 +32,14 @@
 </script>
 
 <style scoped lang="scss">
-  .video {
+  .card {
     width: 100%;
-    height: calc(100vh - 160px);
-    object-fit: contain;
-    object-position: center;
+    display: flex;
+    justify-content: center;
+  }
 
-    @include sm {
-      height: calc(100vh - 120px);
-    }
+  .video {
+    width: auto;
+    height: calc(100vh - var(--p, 16px) * 2);
   }
 </style>
