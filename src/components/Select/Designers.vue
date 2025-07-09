@@ -10,23 +10,23 @@
 
 <script setup>
   import { computed } from 'vue';
-  import useDataDesigners from '@/composables/useDataDesigners';
 
   const props = defineProps({
+    designers: {
+      required: true,
+      type: Array,
+    },
     size: {
       default: 'md',
       type: String,
     }
   });
 
-  const { data } = useDataDesigners();
-
   const designer = defineModel({
     default: null,
   });
 
   const designers = computed(() => {
-    if(!data.results) return [];
-    return data.results.map(designer => ({ value: designer.id, label: designer.title }));
+    return props.designers.map(designer => ({ value: designer.id, label: designer.title }));
   });
 </script>
