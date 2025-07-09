@@ -2,8 +2,8 @@
   <header class="header">
     <div class="wrapper">
       <div class="header__wrap">
-        <a href="#" class="header__logo-wrap">
-          <img src="@/assets/images/logo.svg" width="178" height="43" alt="Логотип Планета">
+        <a href="https://ufa.planeta-mall.ru/" class="header__logo-wrap" target="_blank">
+          <img src="@/assets/images/logo.svg" width="121" height="40" alt="Логотип Планета">
         </a>
         <button class="header__burger" @click="showedMobile = !showedMobile">
           <BaseIcon class="tw-w-full tw-h-full" name="burger" color="#3B3B3B" />
@@ -13,39 +13,20 @@
             class="header__link"
             v-for="link in navLinks"
             :href="link.href"
+            @click.prevent="$scroll.onShowView"
           >
             {{ link.label }}
           </a>
         </nav>
       </div>
     </div>
+    <ScreenMenu :showed="showedMobile" @close="close" :links="navLinks" />
   </header>
-  <div class="mobile-nav" v-if="showedMobile">
-    <div class="wrapper">
-      <div class="mobile-nav__header">
-        <a href="#" class="mobile-nav__logo-wrap">
-          <img src="@/assets/images/logo.svg" width="178" height="43" alt="Логотип Планета">
-        </a>
-        <button class="mobile-nav__close" @click="showedMobile = false">
-          <BaseIcon class="tw-w-full tw-h-full" name="close" color="#151515" />
-        </button>
-      </div>
-      <ul class="mobile-nav__nav">
-        <li
-          class="mobile-nav__item"
-          v-for="link in navLinks"
-        >
-          <a class="mobile-nav__link" :href="link.href">
-            {{ link.mobileLabel ?? link.label }}
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
 </template>
 
 <script setup>
   import { ref, watch } from 'vue';
+  import ScreenMenu from '@/components/LayoutParts/ScreenMenu.vue';
 
   const navLinks = [
     {
@@ -69,6 +50,10 @@
 
   const showedMobile = ref(false);
 
+  function close() {
+    showedMobile.value = false;
+  }
+
   function toggleScroll(val) {
     const className = 'tw-overflow-hidden';
     if(val) {
@@ -86,10 +71,10 @@
 <style scoped lang="scss">
   .header {
     &__logo-wrap {
-      width: 178px;
+      width: 121px;
 
-      @include sm {
-        width: 132px;
+      &:hover {
+        opacity: 0.7;
       }
 
       img {
@@ -98,15 +83,15 @@
     }
 
     &__wrap {
-      padding: 16px 0px;
+      padding: 30px 0px;
       display: flex;
       flex-wrap: wrap;
       gap: 30px;
       justify-content: space-between;
       align-items: center;
 
-      @include sm {
-        padding: 12px 0;
+      @include md {
+        padding: 20px 0;
       }
     }
 
@@ -134,64 +119,6 @@
       @include md {
         display: block;
       }
-    }
-  }
-
-  .mobile-nav {
-    position: fixed;
-    width: 100%;
-    height: 100vh;
-    z-index: 9000;
-    overflow-x: hidden;
-    left: 0px;
-    top: 0px;
-    @apply tw-bg-white;
-
-    &__logo-wrap {
-      width: 178px;
-
-      @include sm {
-        width: 132px;
-      }
-
-      img {
-        width: 100%;
-      }
-    }
-
-    &__header {
-      padding: 16px 0px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 56px;
-
-      @include sm {
-        padding: 12px 0px;
-      }
-    }
-
-    &__close {
-      width: 22px;
-      height: 22px;
-    }
-
-    &__nav {
-
-    }
-
-    &__item {
-      & + & {
-        margin-top: 26px;
-      }
-    }
-
-    &__link {
-      color: #2D2D2D;
-      line-height: 1;
-      @apply tw-font-semibold tw-text-20;
     }
   }
 </style>
