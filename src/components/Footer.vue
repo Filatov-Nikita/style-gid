@@ -52,16 +52,6 @@
       }
     }
 
-    &__wrap {
-      padding-top: 120px;
-      padding-bottom: 90px;
-
-      @include sm {
-        padding-top: 70px;
-        padding-bottom: 50px;
-      }
-    }
-
     &__text {
       line-height: 1.35;
       @apply tw-text-20 tw-font-medium;
@@ -90,11 +80,14 @@
     }
 
     &__logo {
-      width: 222px;
+      width: 121px;
+
+      &:hover {
+        opacity: 0.7;
+      }
 
       @include sm {
         order: -1;
-        width: 210px;
       }
 
       img {
