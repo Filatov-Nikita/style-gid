@@ -5,30 +5,34 @@
         Запись на&nbsp;услугу
       </h2>
       <div class="order-block__grid">
-        <div class="order-block__left">
+        <div v-if="grid.lg" class="order-block__left">
           <Calendar v-model="orderDate" :disabledDates="disabledDates" />
         </div>
         <div class="order-block__right">
-          <SelectDesigners class="order-block__select" v-model="designer" />
-          <div class="current-date order-block__curdt">
-            <div class="current-date__label">Дата</div>
-            <div class="current-date__value">{{ orderDateLabel }}</div>
+          <div class="order-block__body">
+            <SelectDesigners class="order-block__select" v-model="designer" :designers="designers" />
+            <Calendar v-if="!grid.lg" v-model="orderDate" :disabledDates="disabledDates" />
+            <div class="current-date order-block__curdt">
+              <div class="current-date__label">Дата</div>
+              <div class="current-date__value">{{ orderDateLabel }}</div>
+            </div>
+            <BaseSelect
+              class="order-block__select"
+              v-model="orderTime"
+              label="Время"
+              emptyLabel="Выберите время"
+              :options="timeSlots"
+              :disabled="!designer || !orderDate"
+            />
+            <BaseButton theme="black" :disabled="orderDate === '' || designer === null || orderPending" @click="createOrderAction">
+              Записаться
+            </BaseButton>
           </div>
-          <BaseSelect
-            class="order-block__select"
-            v-model="orderTime"
-            label="Время"
-            emptyLabel="Выберите время"
-            :options="timeSlots"
-            :disabled="!designer || !orderDate"
-          />
-          <BaseButton theme="black" :disabled="orderDate === '' || designer === null || orderPending" @click="createOrderAction">
-            Записаться
-          </BaseButton>
         </div>
       </div>
     </div>
     <SuccessModal v-model:showed="successModal" :event="currentEvent" :designer="currentDesigner" @finish="finish" />
+    <BaseInnerLoading :showed="loading" />
   </section>
 </template>
 
@@ -43,10 +47,24 @@
   import { useNotification } from "@kyvg/vue3-notification";
   import { dateToIso, dateToLocale } from '@/helpers';
   import useForm from '@/composables/useForm';
+  import useAppGrid from '@/composables/useAppGrid';
+
+  const props = defineProps({
+    designers: {
+      required: true,
+      type: Array,
+    },
+    loading: {
+      default: false,
+      type: Boolean,
+    },
+  });
+
+  const emit = defineEmits([ 'finish' ]);
+
+  const grid = useAppGrid();
 
   const { notify } = useNotification();
-
-  const { data } = useDataDesigners();
 
   const auth = useAuth();
 
@@ -65,7 +83,7 @@
 
   const currentDesigner = computed(() => {
     if(!designer.value) return null;
-    return data.results.find(d => d.id === designer.value) ?? null;
+    return props.designers.find(d => d.id === designer.value) ?? null;
   });
 
   const availableEvents = computed(() => {
@@ -87,19 +105,22 @@
     }));
   });
 
-  const bookedEvents = computed(() => {
-    if(!currentDesigner.value) return [];
-    return currentDesigner.value.events.filter(event => {
-      return event.users_count >= event.capacity;
-    });
-  });
+  // const bookedEvents = computed(() => {
+  //   if(!currentDesigner.value) return [];
+  //   return currentDesigner.value.events.filter(event => {
+  //     return event.users_count >= event.capacity;
+  //   });
+  // });
 
   const disabledDates = computed(() => {
-    if(!data.results || !currentDesigner.value) return [ { start: null, end: null } ];
+    if(!currentDesigner.value) return [ { start: null, end: null } ];
+
+    const start = new Date();
+    start.setDate(start.getDate() - 1);
 
     return [
       {
-        start: new Date(),
+        start,
         repeat: {
           every: 'day',
           on: (_opts) => {
@@ -124,10 +145,10 @@
   }
 
   function successFn(res) {
-    if(!data.success) {
+    if(!res.data.success) {
         notify({
           type: 'error',
-          text: data.error,
+          text: res.data.error,
         });
       } else {
         console.log(res);
@@ -142,6 +163,7 @@
   function finish() {
     orderDate.value = '';
     designer.value = null;
+    emit('finish');
   }
 
   watch(designer, () => {
@@ -155,13 +177,7 @@
 
 <style scoped lang="scss">
   .order-block {
-    padding-top: 80px;
-    padding-bottom: 150px;
-
-    @include sm {
-      padding-top: 35px;
-      padding-bottom: 70px;
-    }
+    position: relative;
 
     &__title {
       margin-bottom: 48px;
