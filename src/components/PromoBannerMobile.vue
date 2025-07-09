@@ -50,9 +50,5 @@
     &__content {
       margin-bottom: 20px;
     }
-
-    &__action {
-      font-size: 16px !important;
-    }
   }
 </style>

@@ -33,6 +33,10 @@
     line-height: 1.35;
     @apply tw-text-20 tw-font-bold tw-text-center tw-font-druk tw-uppercase;
 
+    @include sm {
+      @apply tw-text-16;
+    }
+
     &:disabled {
       pointer-events: none;
       background-color: #e6e6e6;
