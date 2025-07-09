@@ -1,87 +1,167 @@
 <template>
-  <teleport to="body">
-    <div class="base-dialog" v-bind="$attrs" v-if="modelValue">
-      <div class="base-dialog__wrap">
-        <slot />
-      </div>
-      <div class="overlay" @click="$emit('update:modelValue', false)"></div>
+  <Teleport to="body">
+    <div
+      v-if="!isLeaved"
+      class="modal"
+      :class="[
+        `x-${xPos}`,
+        `y-${yPos}`
+      ]"
+      v-bind="$attrs"
+    >
+      <Transition
+        appear
+        :name="animation"
+        @after-leave="isLeaved = true"
+      >
+        <div v-if="value" class="wrap">
+          <slot v-bind="{ hide }"></slot>
+        </div>
+      </Transition>
+      <slot name="after"></slot>
+      <div class="overlay" @click="hide"></div>
     </div>
-  </teleport>
+  </Teleport>
 </template>
 
-<script>
-export default {
-  inheritAttrs: false,
-  props: {
-    modelValue: {
-      default: false,
-      type: Boolean,
+<script setup>
+  import { computed, ref, watch } from 'vue';
+  import { useScreen } from 'vue-screen';
+
+  const props = defineProps({
+    xPos: {
+      default: 'center',
+      type: String,
     },
-  },
-  emits: ['update:modelValue'],
-  watch: {
-    modelValue: {
-      handler(newVal) {
-        if(newVal) {
-          document.body.classList.add('tw-overflow-hidden');
-        } else {
-          document.body.classList.remove('tw-overflow-hidden');
-        }
-      },
-      immediate: true,
+    yPos: {
+      default: 'center',
+      type: String,
     },
+    animation: {
+      default: 'zoom',
+      type: String,
+    }
+  });
+
+  defineOptions({
+    inheritAttrs: false,
+  });
+
+  const screen = useScreen({}, 100);
+  const screenHeight = computed(() => screen.height + 'px');
+
+  const value = defineModel({
+    default: false,
+  });
+
+  const isLeaved = ref(!value.value);
+
+  watch(value, (v) => {
+    if(v) isLeaved.value = false;
+  });
+
+  watch(value, (v) => {
+    if(v) {
+      scrollOff();
+    } else {
+      scrollOn();
+    }
+  });
+
+  function scrollOff() {
+    document.body.classList.add('tw-overflow-hidden');
   }
-};
+
+  function scrollOn() {
+    document.body.classList.remove('tw-overflow-hidden');
+  }
+
+  function hide() {
+    value.value = false;
+  }
 </script>
 
-
-<style lang="scss">
-.base-dialog__wrap > div {
-  overflow: auto;
-  pointer-events: all;
-  will-change: scroll-position;
-  max-height: calc(100vh - 160px);
-
-  @include sm {
-    max-height: calc(100vh - 120px);
-  }
-}
-</style>
-
 <style scoped lang="scss">
-.base-dialog {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  left: 0;
-  top: 0;
-  z-index: 2000;
+  .modal {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    height: v-bind(screenHeight);
+    z-index: 9000;
+    left: 0;
+    top: 0;
+  }
 
-  &__wrap {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 80px 60px;
+  .overlay {
     position: absolute;
-    pointer-events: none;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
-
-    @include sm {
-      padding: 60px 20px;
-    }
+    background: rgba(0, 0, 0, 0.64);
+    z-index: -1;
   }
-}
 
-.overlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(119, 119, 119, 0.8);
-  z-index: -1;
-}
+  .wrap {
+    pointer-events: none;
+    padding: var(--p, 16px);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: grid;
+  }
+
+  .x-right .wrap {
+    justify-items: end;
+  }
+
+  .x-left .wrap {
+    justify-items: start;
+  }
+
+  .x-center .wrap {
+    justify-items: center;
+  }
+
+  .y-top .wrap {
+    align-items: start;
+  }
+
+  .y-center .wrap {
+    align-items: center;
+  }
+
+  .y-bottom .wrap {
+    align-items: end;
+  }
+
+  .zoom-enter-active {
+    animation: zoomIn;
+    animation-duration: var(--duration, 400ms);
+  }
+
+  .zoom-leave-active {
+    animation: zoomOut;
+    animation-duration: var(--duration, 400ms);
+  }
+
+  .slide-right-enter-active {
+    animation: slideInRight;
+    animation-duration: var(--duration, 400ms);
+  }
+
+  .slide-right-leave-active {
+    animation: slideOutRight;
+    animation-duration: var(--duration, 400ms);
+  }
+
+  :slotted(.wrap > div) {
+    pointer-events: all;
+    will-change: scroll-position;
+    overflow: auto;
+    max-height: calc(100vh - var(--p, 16px) * 2);
+    max-height: calc(v-bind(screenHeight) - var(--p, 16px) * 2);
+  }
 </style>

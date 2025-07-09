@@ -65,6 +65,7 @@
     }
 
     &__body {
+      max-width: 1200px;
       padding-bottom: 25px;
 
       @include sm {

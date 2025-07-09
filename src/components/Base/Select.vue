@@ -188,6 +188,10 @@
     z-index: 100;
     @apply tw-bg-white;
 
+    &:hover {
+      @apply tw-border-black;
+    }
+
     &--md {
       padding: 12px;
       @include sm {
@@ -205,7 +209,7 @@
     user-select: none;
 
     &:hover {
-      color: #959595;
+      color: #767676;
     }
 
     &--md {

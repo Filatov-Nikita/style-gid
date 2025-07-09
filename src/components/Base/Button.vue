@@ -31,7 +31,7 @@
   .base-btn {
     padding: 15px 40px;
     line-height: 1.35;
-    @apply tw-text-24 tw-font-medium tw-text-center tw-font-noto tw-uppercase;
+    @apply tw-text-20 tw-font-bold tw-text-center tw-font-druk tw-uppercase;
 
     &:disabled {
       pointer-events: none;
