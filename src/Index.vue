@@ -45,3 +45,65 @@
 
   const designers = computed(() => data.value.results ?? []);
 </script>
+
+<style scoped lang="scss">
+  .section-banner {
+    padding-bottom: 60px;
+
+    @include md {
+      padding-bottom: 40px;
+    }
+  }
+
+  .section-banner-mobile {
+      margin-bottom: 40px;
+  }
+
+  .section-about {
+    padding: 60px 0 70px;
+
+    @include md {
+      padding: 40px 0 40px;
+    }
+  }
+
+  .section-faq {
+    padding: 70px 0 100px;
+
+    @include md {
+      padding: 40px 0 70px;
+    }
+  }
+
+  .section-comments {
+    padding: 70px 0 80px;
+
+    @include md {
+      padding: 40px 0 60px;
+    }
+  }
+
+  .section-footer {
+    padding: 60px 0;
+
+    @include md {
+      padding: 40px 0;
+    }
+  }
+
+  .section-order {
+    padding: 70px 0;
+
+    @include md {
+      padding: 40px 0;
+    }
+  }
+
+  .section-designers {
+    padding: 70px 0;
+
+    @include md {
+      padding: 40px 0;
+    }
+  }
+</style>
