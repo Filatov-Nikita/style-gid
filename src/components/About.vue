@@ -3,7 +3,7 @@
     <div class="wrapper">
       <div class="about-block__wrap">
         <div class="about-block__left">
-          <h2 class="h1">Об услуге</h2>
+          <h2 class="h2">Об услуге</h2>
         </div>
         <div class="about-block__right">
           <p class="about-block__text1">{{ text1 }}</p>
@@ -23,37 +23,31 @@
 
 <style scoped lang="scss">
   .about-block {
+    --gap-x: 50px;
+    --gap-y: 20px;
+    --col-width: 50%;
+
+    @include lg {
+      --col-width: 100%;
+    }
+
+    @include sm {
+      --gap-y: 16px;
+    }
+
     &__wrap {
-      padding-top: 120px;
-      padding-bottom: 80px;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
-
-      @include lg {
-        gap: 20px;
-      }
-
-      @include sm {
-        padding-top: 70px;
-        padding-bottom: 35px;
-      }
+      column-gap: var(--gap-x);
+      row-gap: var(--gap-y);
     }
 
     &__left {
-      flex-basis: 450px;
-
-      @include lg {
-        flex-basis: 100%;
-      }
+      width: calc(var(--col-width) - (var(--gap-x) / 2));
     }
 
     &__right {
-      flex-basis: 639px;
-
-      @include lg {
-        flex-basis: 100%;
-      }
+      width: calc(var(--col-width) - (var(--gap-x) / 2));
     }
 
     &__text1 {
@@ -76,10 +70,11 @@
     &__text2 {
       line-height: 1.35;
       margin-bottom: 10px;
-      @apply tw-text-30 tw-font-noto tw-font-semibold;
+      font-size: 24px;
+      @apply tw-font-druk tw-font-bold;
 
       @include sm {
-        font-size: 26px;;
+        font-size: 20px;
       }
     }
   }
