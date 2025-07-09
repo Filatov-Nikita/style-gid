@@ -5,7 +5,7 @@
         <BaseIcon class="tw-w-full tw-h-full" name="close" color="#151515" />
       </button>
       <form @submit.prevent="onSubmit">
-        <SelectDesigners class="tw-mb-4" size="sm" v-model="form.activity_id" />
+        <SelectDesigners class="tw-mb-4" size="sm" v-model="form.activity_id" :designers="designers" />
         <BaseTextarea class="tw-mb-4" label="Текст" v-model="form.message" placeholder="Текст отзыва" />
         <BaseFileInput
           multiple
@@ -32,6 +32,15 @@
   import useForm from '@/composables/useForm';
   import { fileToBase64 } from '@/helpers';
 
+  const props = defineProps({
+    designers: {
+      required: true,
+      type: Array,
+    },
+  });
+
+  const emit = defineEmits([ 'finish' ]);
+
   const { notify } = useNotification();
 
   const auth = useAuth();
@@ -52,6 +61,7 @@
       type: 'success',
       text: 'Ваш отзыв успешно принят!',
     });
+    emit('finish');
   }
 
   const { form, pending, onSubmit } = useForm(

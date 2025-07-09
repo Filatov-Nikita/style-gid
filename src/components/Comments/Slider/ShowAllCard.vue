@@ -19,7 +19,13 @@
     background: #494848;
     border-radius: 20px;
     transition: opacity 100ms;
-    @apply tw-uppercase tw-underline tw-font-noto tw-font-medium tw-text-24 tw-text-white;
+    font-size: 18px;
+    padding: 20px;
+    @apply tw-uppercase tw-underline tw-font-druk tw-font-bold tw-text-white;
+
+    @include sm {
+      font-size: 14px;
+    }
 
     &:hover {
       opacity: 0.9;

@@ -2,7 +2,7 @@
   <section class="comment-block" id="comments">
     <div class="wrapper">
       <div class="comment-block__wrap">
-        <h2 class="h1 comment-block__title">Отзывы</h2>
+        <h2 class="h2 comment-block__title">Отзывы</h2>
         <p class="comment-block__empty" v-if="commentsList.length === 0">Оставьте отзыв, вы будете первым!</p>
         <template v-else>
           <SwiperNav
@@ -42,7 +42,7 @@
           </Swiper>
         </template>
         <BaseButton @click="showCreateCommentAction">Оставить отзыв</BaseButton>
-        <CreateModal v-model="showedCreateModal" />
+        <CreateModal v-model="showedCreateModal" :designers="designers" @finish="send" />
         <ShowOneModal
           v-if="lastComment"
           v-model="showedCommentModal"
@@ -50,6 +50,7 @@
         />
       </div>
     </div>
+    <BaseInnerLoading :showed="loading" />
   </section>
 </template>
 
@@ -64,10 +65,20 @@
   import useAuth from '@/composables/useAuth';
   import * as CommentsAPI from '@/http/comments';
   import { computed, ref } from 'vue';
+  import useRequest from '@/composables/useRequest';
+
+  const props = defineProps({
+    designers: {
+      required: true,
+      type: Array,
+    },
+  });
 
   const auth = useAuth();
-  const { data } = await CommentsAPI.all();
-  const comments = ref(data.results ?? []);
+  const { data, loading, send } = await useRequest(CommentsAPI.all, {
+    errorMessage: 'Не удалось загрузить отзывы!'
+  });
+  const comments = computed(() => data.value.results ?? []);
   const showedCreateModal = ref(false);
   const showedCommentModal = ref(false);
 
@@ -106,16 +117,10 @@
 
 <style scoped lang="scss">
   .comment-block {
-    &__wrap {
-      padding-bottom: 150px;
-
-      @include sm {
-        padding-bottom: 70px;
-      }
-    }
+    position: relative;
 
     &__title {
-      margin-bottom: 2px;
+      margin-bottom: 20px;
     }
 
     &__slider {

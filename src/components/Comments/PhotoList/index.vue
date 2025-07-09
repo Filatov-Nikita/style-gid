@@ -31,17 +31,11 @@
 
   .list-item {
     width: calc(25% - 10px);
-    height: 136px;
     margin: 5px;
     cursor: pointer;
 
-    @include lg {
-      height: 100px;
-    }
-
     @include sm {
       width: calc(50% - 10px);
-      height: 136px;
     }
   }
 </style>

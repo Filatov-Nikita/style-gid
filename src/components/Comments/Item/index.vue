@@ -11,8 +11,8 @@
         {{ comment.message }}
       </TextClamp>
     </div>
-    <div class="comment-item__photos">
-      <PhotoList v-if="comment.photos" :photos="comment.photos" @change:photo="changePhoto" />
+    <div class="comment-item__photos" v-if="comment.photos">
+      <PhotoList :photos="comment.photos" @change:photo="changePhoto" />
     </div>
     <PhotoModal v-if="comment.photos" v-model="showedPhoto" :photos="comment.photos" :activePhoto="activePhoto" />
   </article>
