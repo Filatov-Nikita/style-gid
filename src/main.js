@@ -10,18 +10,22 @@ import BaseModalCard from './components/Base/Modal/Card.vue';
 import BaseInput from './components/Base/Input.vue';
 import BaseTextarea from './components/Base/Textarea.vue';
 import BaseSpinner from './components/Base/Spinner.vue';
+import BaseImage from '@/components/Base/Image.vue';
 import InnerLoading from './components/Base/InnerLoading.vue';
 import FileInput from './components/Base/FileInput.vue';
 import Notifications from '@kyvg/vue3-notification';
 import VOrder from './plugins/order';
 import VScroll from './plugins/scroll';
 import 'virtual:svg-icons-register';
+import { init as initConfig, configKey } from '@/composables/useConfig';
 
 const app = createApp(App);
 
 app.use(Notifications);
 app.use(VOrder);
 app.use(VScroll);
+
+app.provide(configKey, initConfig());
 
 app.component('BaseButton', BaseButton);
 app.component('BaseIcon', BaseIcon);
@@ -31,6 +35,7 @@ app.component('BaseModalCard', BaseModalCard);
 app.component('BaseInput', BaseInput);
 app.component('BaseTextarea', BaseTextarea);
 app.component('BaseFileInput', FileInput);
+app.component('BaseImage', BaseImage);
 app.component('BaseSpinner', BaseSpinner);
 app.component('BaseInnerLoading', InnerLoading);
 

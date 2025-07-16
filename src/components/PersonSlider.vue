@@ -2,11 +2,17 @@
   <Swiper class="person-slider" v-bind="options" @swiper="onSwiper" @slide-change="onSliderChange">
     <SwiperSlide
       class="person-slide"
-      v-for="person in persons"
+      v-for="designer in designers"
     >
       <div class="person-slide__wrap">
         <div class="person-slide__photo-wrap">
-          <img class="person-slide__photo" :width="person.photo.width" :height="person.photo.height" :src="person.photo.url" loading="lazy" />
+          <BaseImage
+            class="person-slide__photo"
+            :width="designer.options.photo.width"
+            :height="designer.options.photo.height"
+            :src="designer.options.photo.url"
+            loading="lazy"
+          />
           <template v-if="!grid.md">
             <button class="slider-mini-btn slider-mini-btn--left" :disabled="!canPrev" @click="prev">
               <BaseIcon :color="canPrev ? '#000000' : '#BEBEBE'" class="slider-mini-btn__icon" name="slider-left" />
@@ -20,12 +26,12 @@
           <div v-if="!grid.md" class="counter-block-mini person-slide__cnt">
             <span>{{ counter.current }}</span><span>/</span><span class="counter-block-mini__total">{{ counter.total }}</span>
           </div>
-          <p class="person-slide__name">{{ person.name }}</p>
-          <p class="person-slide__label">{{ person.description }}</p>
-          <p class="person-slide__text" v-html="person.body"></p>
-          <div class="person-slide__video video-block" v-if="person.video">
+          <p class="person-slide__name">{{ designer.title }}</p>
+          <p class="person-slide__label">{{ designer.subtitle }}</p>
+          <p class="person-slide__text" v-html="designer.preview_text"></p>
+          <div class="person-slide__video video-block" v-if="designer.options.video">
             <p class="video-block__title">Видеовизитка</p>
-            <BaseButton @click="showedVideo = person.video">Смотреть</BaseButton>
+            <BaseButton @click="showedVideo = designer.options.video">Смотреть</BaseButton>
           </div>
           <div v-if="grid.md" class="person-slide__actions">
             <div class="counter-block person-slide__cnt">
@@ -60,7 +66,7 @@
   import useAppGrid from '@/composables/useAppGrid';
 
   const props = defineProps({
-    persons: {
+    designers: {
       required: true,
       type: Array,
     }
@@ -93,7 +99,7 @@
   const showedVideo = ref(null);
 
   const total = computed(() => {
-    return props.persons.length;
+    return props.designers.length;
   });
 
   const counter = computed(() => {

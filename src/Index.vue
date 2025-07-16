@@ -5,7 +5,7 @@
       <PromoBanner v-if="grid.md" class="section-banner" />
       <PromoBannerMobile v-if="!grid.md" class="section-banner-mobile" />
       <About class="section-about" />
-      <Designers class="section-designers" />
+      <Designers class="section-designers" :designers="designers" />
       <Order class="section-order"
         :designers="designers"
         :loading="loading"

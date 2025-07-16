@@ -109,17 +109,5 @@
     @include sm {
       padding: 40px 20px 16px;
     }
-
-    &__close {
-      width: 24px;
-      height: 24px;
-      position: absolute;
-      right: 20px;
-      top: 20px;
-    }
-
-    &__title {
-
-    }
   }
 </style>

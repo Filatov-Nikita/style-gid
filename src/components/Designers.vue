@@ -5,7 +5,7 @@
         <h2 class="h2 designer-block__title">
           Наши стилисты
         </h2>
-        <PersonSlider :persons="list" />
+        <PersonSlider :designers="designers" />
       </div>
     </div>
   </section>
@@ -13,7 +13,13 @@
 
 <script setup>
   import PersonSlider from './PersonSlider.vue';
-  import { list } from '@/data/designers';
+
+  const props = defineProps({
+    designers: {
+      required: true,
+      type: Array,
+    },
+  });
 </script>
 
 <style scoped lang="scss">
